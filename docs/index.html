@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NumPy C Library — API Reference</title>
+<style>
+:root {
+  --bg: #ffffff; --fg: #1a1a2e; --code-bg: #f4f4f8; --border: #e0e0e8;
+  --link: #2563eb; --accent: #4f46e5; --accent2: #7c3aed;
+  --tag-bg: #eef2ff; --tag-fg: #4338ca; --warn-bg: #fffbeb; --warn-fg: #92400e;
+  --green: #059669; --sidebar-w: 250px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--fg); background: var(--bg); line-height: 1.6; display: flex; min-height: 100vh; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; background: var(--code-bg); padding: 1px 4px; border-radius: 3px; }
+pre { background: #1e1e2e; color: #cdd6f4; border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 10px 0; font-size: 13px; line-height: 1.45; }
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+nav { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: #fafaff; border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 16px; font-size: 13px; z-index: 10; }
+nav h1 { font-size: 14px; color: var(--accent); margin-bottom: 6px; cursor: pointer; }
+nav h1:hover { opacity: 0.8; }
+nav .ver { font-size: 11px; color: #999; margin-bottom: 14px; }
+nav .mod { display: block; padding: 3px 0; color: #555; cursor: pointer; border-radius: 3px; }
+nav .mod:hover, nav .mod.active { color: var(--accent); background: var(--tag-bg); padding-left: 6px; }
+nav .sep { font-weight: 600; color: #333; margin-top: 14px; margin-bottom: 2px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+nav input { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; margin: 8px 0; outline: none; }
+nav input:focus { border-color: var(--accent); }
+.lang-toggle { display:flex; gap:4px; margin-bottom:8px; }
+.lang-btn { background:#f0f0f4; border:1px solid #d0d0d8; border-radius:4px; padding:3px 8px; font-size:11px; font-weight:600; cursor:pointer; color:#666; }
+.lang-btn.active { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+.lang-btn:hover:not(.active) { background:#e0e0e8; }
+main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display: flex; flex-direction: column; align-items: center; }
+.page { display: none; max-width: 864px; width: 100%; }
+.page.active { display: block; }
+.hero { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; padding: 20px 28px; border-radius: 10px; margin: 20px 0 28px; }
+.hero h1 { font-size: 26px; color: #fff; margin-bottom: 2px; font-weight: 700; letter-spacing: -0.5px; }
+.hero h1 span { color: #a5b4fc; }
+.hero p { opacity: 0.85; font-size: 13px; margin: 2px 0; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.2); color: white; margin-right: 4px; margin-top: 6px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+.card { border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: box-shadow 0.15s; }
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: var(--accent); }
+.card h3 { font-size: 14px; color: var(--accent); margin-bottom: 2px; }
+.card p { font-size: 12px; color: #888; line-height: 1.4; }
+.card .n { font-size: 20px; font-weight: 700; color: var(--accent2); float: right; }
+.module-header { margin-bottom: 20px; }
+.module-header h2 { font-size: 22px; color: var(--accent); }
+.module-header p { color: #666; font-size: 14px; margin-top: 4px; }
+.fn-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.fn-table th { background: #fafaff; text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); font-size: 12px; color: #666; }
+.fn-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+.fn-table tr:hover td { background: var(--code-bg); }
+.fn-table .fn-name { font-weight: 600; color: var(--accent); cursor: pointer; }
+.fn-table .fn-name:hover { text-decoration: underline; }
+.fn-table .fn-sig { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #555; }
+.tag { display: inline-block; background: var(--tag-bg); color: var(--tag-fg); font-size: 10px; padding: 1px 6px; border-radius: 99px; }
+.fn-detail h2 { font-size: 22px; color: var(--accent); margin-bottom: 4px; }
+.fn-detail .sig-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 10px 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; }
+.fn-detail section { margin: 20px 0; }
+.fn-detail section h3 { font-size: 15px; color: #333; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 8px; }
+.fn-detail .param-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+.fn-detail .param-table th { background: #fafaff; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.fn-detail .param-table td { padding: 5px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.fn-detail .note { background: var(--warn-bg); border-left: 3px solid #f59e0b; padding: 10px 14px; margin: 10px 0; font-size: 13px; border-radius: 0 6px 6px 0; color: var(--warn-fg); }
+.fn-detail .related { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.fn-detail .related a { display: inline-block; padding: 3px 10px; background: var(--tag-bg); color: var(--tag-fg); border-radius: 99px; font-size: 12px; }
+.fn-detail .related a:hover { background: var(--accent); color: white; text-decoration: none; }
+.back-link { display: inline-block; margin-bottom: 16px; font-size: 13px; color: var(--link); cursor: pointer; }
+.back-link:hover { text-decoration: underline; }
+@media (max-width: 800px) { nav { display: none; } main { margin-left: 0; padding: 16px; } }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <h1 onclick="navTo('home')">&#x25C6; <span class="nav-title">NumPy C</span></h1>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-l="zh" onclick="switchLang('zh')" title="简体中文">中</button>
+    <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
+  </div>
+  <div class="ver">v1.0 · 324 files · 276 funcs</div>
+  <input type="search" id="quickSearch" placeholder="Search function…" onkeydown="if(event.key==='Enter')quickFind()">
+  <span class="sep">Overview</span>
+  <a class="mod" data-page="install">Installation</a>
+  <a class="mod" data-page="datatypes">Data Types</a>
+  <a class="mod" data-page="patterns">Usage Patterns</a>
+  <a class="mod" data-page="headers">Header Files</a>
+  <span class="sep">Modules</span>
+  <a class="mod" data-page="create">Array Creation</a>
+  <a class="mod" data-page="shape">Shape &amp; Manipulation</a>
+  <a class="mod" data-page="arith">Arithmetic &amp; Math</a>
+  <a class="mod" data-page="trig">Trigonometry</a>
+  <a class="mod" data-page="fp">Floating-Point Ops</a>
+  <a class="mod" data-page="stats">Statistics</a>
+  <a class="mod" data-page="nanstats">NaN Statistics</a>
+  <a class="mod" data-page="linalg">Linear Algebra</a>
+  <a class="mod" data-page="fft">FFT</a>
+  <a class="mod" data-page="datetime">Datetime</a>
+  <a class="mod" data-page="random">Random Numbers</a>
+  <a class="mod" data-page="poly">Polynomials</a>
+  <a class="mod" data-page="window">Window Functions</a>
+  <a class="mod" data-page="interp">Interpolation</a>
+  <a class="mod" data-page="signal">Signal Processing</a>
+  <a class="mod" data-page="compare">Comparison &amp; Logic</a>
+  <a class="mod" data-page="searchm">Search &amp; Set</a>
+  <a class="mod" data-page="manip">Array Manipulation</a>
+  <a class="mod" data-page="bitwise">Bitwise Operations</a>
+  <a class="mod" data-page="io">I/O</a>
+  <a class="mod" data-page="utils">Utilities</a>
+</nav>
+<main id="main"></main>
+<script>
+const MODULES = {
+create: { name:'Array Creation', desc:'Factory functions that produce new Array objects.', icon:'🏗️' },
+shape: { name:'Shape & Manipulation', desc:'Reshape, transpose, stack, split, broadcast.', icon:'📐' },
+arith: { name:'Arithmetic & Math', desc:'Element-wise +, −, ×, ÷, sqrt, exp, log, power, mod, hypot.', icon:'🔢' },
+trig: { name:'Trigonometry', desc:'sin, cos, tan, arcsin, arccos, arctan, hyperbolic, angle conversion.', icon:'📐' },
+fp: { name:'Floating-Point Ops', desc:'fabs, copysign, nextafter, spacing, frexp, modf.', icon:'⚙️' },
+stats: { name:'Statistics', desc:'sum, mean, std, var, median, percentile, cumsum, cov, trapz.', icon:'📊' },
+nanstats:{ name:'NaN-Aware Statistics', desc:'nanmax, nanmin, nanmean, nanmedian, nanpercentile, nancumsum.', icon:'📊' },
+linalg: { name:'Linear Algebra', desc:'matmul, dot, svd, qr, lu, cholesky, inv, pinv, det, trace.', icon:'🧮' },
+fft: { name:'FFT — Fourier Transform', desc:'Cooley-Tukey radix-2. fft, ifft, fft2, fftn, rfft, irfft, utilities.', icon:'〰️' },
+datetime: { name:'Datetime', desc:'datetime64 type: now, from_string, as_string, add/sub days, compare, is_busday.', icon:'📅' },
+random: { name:'Random Numbers', desc:'xoshiro256** PRNG. 44 distributions: normal, gamma, binomial, etc.', icon:'🎲' },
+poly: { name:'Polynomials', desc:'poly, roots, polyadd, polymul, polydiv, polyder, polyfit, polyval.', icon:'📈' },
+window: { name:'Window Functions', desc:'hamming, hanning, bartlett, blackman, kaiser.', icon:'🪟' },
+interp: { name:'Interpolation', desc:'interp — 1D linear interpolation.', icon:'📈' },
+signal: { name:'Signal Processing', desc:'convolve, correlate.', icon:'📡' },
+compare:{ name:'Comparison & Logic', desc:'greater, equal, less, isclose, logical_and/or/xor/not, all, any.', icon:'🔍' },
+searchm:{ name:'Search & Set', desc:'unique, intersect1d, setdiff1d, digitize, searchsorted, argmax, argsort.', icon:'🔎' },
+manip: { name:'Array Manipulation', desc:'clip, choose, compress, delete, extract, insert, place, put, around.', icon:'✂️' },
+bitwise:{ name:'Bitwise Operations', desc:'bitwise_and/or/xor/not, invert, left_shift, right_shift.', icon:'💻' },
+io: { name:'I/O', desc:'readtxt, genfromtxt, savetxt, savez (NPZ), frombuffer.', icon:'💾' },
+utils: { name:'Utilities', desc:'astype, copy, nan_to_num, unwrap, real/imag, ix_, bincount, lcm, gcd.', icon:'🧰' },
+};
+</script>
+<script src="i18n.js"></script>
+<script src="fns.js"></script>
+<script>
+/* ── Static pages ── */
+const PAGES = {
+install: { titleEn:'Installation', titleZh:'安装指南', html:`
+<style>
+.inst-step { display:flex; gap:16px; align-items:flex-start; margin:20px 0; padding:18px 20px; border:1px solid #e8e8f0; border-radius:10px; }
+.inst-step .num { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:#4f46e5; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; }
+.inst-step h3 { margin:0 0 4px; font-size:15px; color:#333; }
+.inst-step p { margin:0; color:#666; font-size:13px; }
+.inst-step .extra { margin-top:8px; }
+.plat-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:12px; margin:12px 0 24px; }
+.plat-card { border:1px solid #e8e8f0; border-radius:10px; padding:16px 18px; }
+.plat-card h3 { font-size:14px; margin:0 0 8px; display:flex; align-items:center; gap:6px; }
+.plat-card p { font-size:12px; color:#666; margin:3px 0; }
+.plat-card code { font-size:12px; }
+.plat-icon { font-size:20px; }
+.req-card { display:flex; align-items:center; gap:12px; padding:12px 16px; border:1px solid #e8e8f0; border-radius:8px; margin:8px 0; font-size:13px; }
+.req-card .r-icon { font-size:20px; flex-shrink:0; }
+.req-card strong { display:block; color:#333; }
+.req-card span { color:#888; font-size:12px; }
+.cmd-block { background:#1e1e2e; color:#cdd6f4; border-radius:8px; padding:14px 18px; margin:12px 0; font-family:'SF Mono','Fira Code',monospace; font-size:13px; line-height:1.5; overflow-x:auto; white-space:pre-wrap; word-break:break-all; }
+.cmd-block .cmt { color:#6c7086; }
+.cmd-step { margin:18px 0; }
+.cmd-step h3 { font-size:14px; color:#333; margin:0 0 6px; }
+</style>
+<div class="inst-step"><div class="num">1</div><div>
+  <h3>Requirements</h3>
+  <p>Everything you need before building the library.</p>
+  <div class="extra">
+    <div class="req-card"><span class="r-icon">🔧</span><div><strong>C99 Compiler</strong><span>GCC 5.x+ / Clang 3.3+ / Apple Clang 15+ / MinGW-w64</span></div></div>
+    <div class="req-card"><span class="r-icon">📐</span><div><strong>libm</strong><span>Standard C math library — bundled with every OS, no extra install needed</span></div></div>
+    <div class="req-card"><span class="r-icon">📦</span><div><strong>libzip</strong><span>NPZ file I/O only. <code>brew install libzip</code> (macOS) · <code>apt install libzip-dev</code> (Linux)</span></div></div>
+  </div>
+</div></div>
+<div class="inst-step"><div class="num">2</div><div>
+  <h3>Clone &amp; Build</h3>
+  <p>Download the source and compile both static and shared libraries.</p>
+</div></div>
+<div class="cmd-block"><span class="cmt"># Clone the repository</span>
+git clone https://github.com/xiayang558/libnpc.git
+cd libnpc
+
+<span class="cmt"># Build static library (default)</span>
+make          <span class="cmt"># → lib/libnpc.a (~875 KB)</span>
+
+<span class="cmt"># Build shared library</span>
+make shared   <span class="cmt"># → lib/libnpc.so (Linux) / lib/libnpc.dylib (macOS)</span>
+
+<span class="cmt"># Build + run all 172 tests</span>
+make test     <span class="cmt"># static link — typically 170+ pass</span>
+make test-shared  <span class="cmt"># shared link — verify .so/.dylib works</span>
+
+<span class="cmt"># Install system-wide (copies both static + shared + headers)</span>
+make install  <span class="cmt"># → /usr/local (override with PREFIX=/custom/path)</span></div>
+<div class="inst-step"><div class="num">3</div><div>
+  <h3>Link Into Your Project</h3>
+  <p>Include the headers, then link against the static (<code>libnpc.a</code>) or shared (<code>libnpc.so</code> / <code>libnpc.dylib</code>) library.</p>
+</div></div>
+<div class="cmd-block"><span class="cmt"># Compile your source file</span>
+gcc -I<b>path/to/libnpc/include</b> -c myfile.c
+
+<span class="cmt"># Option A: link against static library (self-contained binary)</span>
+gcc myfile.o <b>path/to/libnpc/lib/libnpc.a</b> -lm -lzip -o myapp
+
+<span class="cmt"># Option B: link against shared library (smaller binary, .so/.dylib needed at runtime)</span>
+gcc myfile.o -L<b>path/to/libnpc/lib</b> -lnpc -lm -lzip \
+    -Wl,-rpath,<b>path/to/libnpc/lib</b> -o myapp
+
+<span class="cmt"># If installed to /usr/local:</span>
+gcc myfile.o -lnpc -lm -lzip -o myapp     <span class="cmt"># auto-finds libnpc in standard paths</span></div>
+<div class="inst-step"><div class="num">4</div><div>
+  <h3>Supported Platforms</h3>
+  <p>Tested on the following environments.</p>
+</div></div>
+<div class="plat-grid">
+<div class="plat-card"><h3><span class="plat-icon">🍎</span> macOS</h3><p>Arch: <strong>arm64</strong> (Apple Silicon) / <strong>x86_64</strong> (Intel)</p><p>Compiler: <strong>Apple Clang 15+</strong></p><p>Dep: <code>brew install libzip</code></p></div>
+<div class="plat-card"><h3><span class="plat-icon">🐧</span> Ubuntu</h3><p>Arch: <strong>x86_64</strong> / <strong>aarch64</strong></p><p>Compiler: <strong>GCC 5+</strong> or <strong>Clang 3.3+</strong></p><p>Dep: <code>sudo apt install libzip-dev</code></p></div>
+<div class="plat-card"><h3><span class="plat-icon">🐲</span> Kylin</h3><p>Arch: <strong>x86_64</strong> / <strong>aarch64</strong> (Phytium, Kunpeng)</p><p>Compiler: <strong>GCC 5+</strong> or <strong>Clang 3.3+</strong></p><p>Dep: <code>sudo yum install libzip-devel</code></p></div>
+<div class="plat-card"><h3><span class="plat-icon">🥧</span> Raspberry Pi</h3><p>Arch: <strong>armhf</strong> (Pi 3/4) / <strong>aarch64</strong> (Pi 4/5, 64-bit OS)</p><p>Compiler: <strong>GCC 5+</strong></p><p>Dep: <code>sudo apt install libzip-dev</code></p></div>
+<div class="plat-card"><h3><span class="plat-icon">🪟</span> Windows</h3><p>Arch: <strong>x86_64</strong></p><p>Compiler: <strong>MinGW-w64</strong> (MSYS2)</p><p>Dep: <code>pacman -S libzip</code></p></div>
+</div>
+	<style>
+	.mk-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px; margin:12px 0 24px; }
+	.mk-card { border:1px solid #e8e8f0; border-radius:8px; padding:14px 16px; }
+	.mk-card code { font-weight:600; color:#4f46e5; font-size:13px; background:transparent; padding:0; }
+	.mk-card p { font-size:12px; color:#888; margin:4px 0 0; }
+	</style>
+	<h3>Makefile Targets</h3>
+	<div class="mk-grid">
+	<div class="mk-card"><code>make</code><p>Build lib/libnpc.a — default target</p></div>
+	<div class="mk-card"><code>make test</code><p>Compile and run all 172 tests</p></div>
+	<div class="mk-card"><code>make runtest</code><p>Run tests without rebuilding</p></div>
+	<div class="mk-card"><code>make demo</code><p>Build and run the example</p></div>
+	<div class="mk-card"><code>make clean</code><p>Remove build/ and lib/</p></div>
+	<div class="mk-card"><code>make install</code><p>Install to /usr/local (set PREFIX=)</p></div>
+	</div>
+`},
+datatypes:{ titleEn:'Data Types', titleZh:'数据类型', html:`
+<style>
+.dt-tbl { width:100%; border-collapse:collapse; border-radius:8px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06); margin:12px 0 24px; }
+.dt-tbl th { background:#4f46e5; color:#fff; padding:10px 14px; font-size:12px; text-align:left; font-weight:600; letter-spacing:.3px; }
+.dt-tbl td { padding:9px 14px; border-bottom:1px solid #f0f0f4; font-size:13px; }
+.dt-tbl tr:last-child td { border-bottom:none; }
+.dt-tbl tbody tr:hover { background:#fafaff; }
+.dt-tbl .dt-name { font-weight:600; color:#4f46e5; font-family:'SF Mono','Fira Code',monospace; font-size:13px; }
+.dt-tbl .dt-cat { display:inline-block; padding:2px 8px; border-radius:99px; font-size:10px; font-weight:600; letter-spacing:.3px; }
+.cat-bool { background:#e0f2fe; color:#0369a1; }
+.cat-int  { background:#dcfce7; color:#15803d; }
+.cat-uint { background:#fef3c7; color:#a16207; }
+.cat-flt  { background:#ede9fe; color:#6d28d9; }
+.cat-cplx { background:#fce7f3; color:#be185d; }
+.cat-spec { background:#f1f5f9; color:#475569; }
+.dt-range { color:#999; font-size:11px; font-style:italic; }
+.promo-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:10px; margin:12px 0 24px; }
+.promo-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border:1px solid #e8e8f0; border-radius:8px; font-size:13px; }
+.promo-item code { font-size:12px; }
+.promo-arrow { color:#4f46e5; font-weight:700; }
+.promo-reason { color:#888; font-size:11px; margin-left:auto; }
+</style>
+<p style="margin:0 0 4px;color:#666;font-size:14px;">17 data types organised into six categories. All are defined in the <code>DataType</code> enum.</p>
+<table class="dt-tbl">
+<thead><tr><th>Enum</th><th>C Type</th><th>Size</th><th>NumPy</th><th>Values</th></tr></thead>
+<tbody>
+<tr><td><span class="dt-cat cat-bool">BOOL</span></td><td><code>uint8_t</code></td><td>1 B</td><td>bool_</td><td class="dt-range">false (0) / true (1)</td></tr>
+<tr><td><span class="dt-cat cat-int">INT8</span></td><td><code>int8_t</code></td><td>1 B</td><td>int8</td><td class="dt-range">−128 … 127</td></tr>
+<tr><td><span class="dt-cat cat-int">INT16</span></td><td><code>int16_t</code></td><td>2 B</td><td>int16</td><td class="dt-range">−32,768 … 32,767</td></tr>
+<tr><td><span class="dt-cat cat-int">INT32</span></td><td><code>int32_t</code></td><td>4 B</td><td>int32</td><td class="dt-range">−2.1×10⁹ … 2.1×10⁹</td></tr>
+<tr><td><span class="dt-cat cat-int">INT64</span></td><td><code>int64_t</code></td><td>8 B</td><td>int64</td><td class="dt-range">−9.2×10¹⁸ … 9.2×10¹⁸</td></tr>
+<tr><td><span class="dt-cat cat-uint">UINT8</span></td><td><code>uint8_t</code></td><td>1 B</td><td>uint8</td><td class="dt-range">0 … 255</td></tr>
+<tr><td><span class="dt-cat cat-uint">UINT16</span></td><td><code>uint16_t</code></td><td>2 B</td><td>uint16</td><td class="dt-range">0 … 65,535</td></tr>
+<tr><td><span class="dt-cat cat-uint">UINT32</span></td><td><code>uint32_t</code></td><td>4 B</td><td>uint32</td><td class="dt-range">0 … 4.3×10⁹</td></tr>
+<tr><td><span class="dt-cat cat-uint">UINT64</span></td><td><code>uint64_t</code></td><td>8 B</td><td>uint64</td><td class="dt-range">0 … 1.8×10¹⁹</td></tr>
+<tr><td><span class="dt-cat cat-flt">FLOAT32</span></td><td><code>float</code></td><td>4 B</td><td>float32</td><td class="dt-range">±1.5×10⁻⁴⁵ … 3.4×10³⁸</td></tr>
+<tr><td><span class="dt-cat cat-flt">FLOAT64</span></td><td><code>double</code></td><td>8 B</td><td>float64</td><td class="dt-range">±5.0×⁻³²⁴ … 1.7×10³⁰⁸</td></tr>
+<tr><td><span class="dt-cat cat-flt">FLOAT128</span></td><td><code>long double</code></td><td>16 B</td><td>float128</td><td class="dt-range">platform-dependent</td></tr>
+<tr><td><span class="dt-cat cat-cplx">COMPLEX64</span></td><td><code>complex float</code></td><td>8 B</td><td>complex64</td><td class="dt-range">2×FLOAT32 (re + im)</td></tr>
+<tr><td><span class="dt-cat cat-cplx">COMPLEX128</span></td><td><code>complex double</code></td><td>16 B</td><td>complex128</td><td class="dt-range">2×FLOAT64 (re + im)</td></tr>
+<tr><td><span class="dt-cat cat-cplx">COMPLEX256</span></td><td><code>complex long double</code></td><td>32 B</td><td>complex256</td><td class="dt-range">2×FLOAT128 (re + im)</td></tr>
+<tr><td><span class="dt-cat cat-spec">DATETIME64</span></td><td><code>int64_t</code> + unit enum</td><td>8 B</td><td>datetime64</td><td class="dt-range">ns … weeks resolution</td></tr>
+<tr><td><span class="dt-cat cat-spec">STRING</span></td><td><code>char*</code></td><td>—</td><td>str_</td><td class="dt-range">null-terminated</td></tr>
+</tbody></table>
+<h3>Type Promotion</h3>
+<p style="color:#666;font-size:14px;margin-bottom:10px;">Binary operations automatically widen types via <code>promote_type(t1,t2)</code>. Rules:</p>
+<div class="promo-grid">
+<div class="promo-item"><code>INT+INT</code><span class="promo-arrow">→</span><code>INT64</code><span class="promo-reason">widest int</span></div>
+<div class="promo-item"><code>INT+FLOAT</code><span class="promo-arrow">→</span><code>FLOAT64</code><span class="promo-reason">float dominates</span></div>
+<div class="promo-item"><code>UINT+INT</code><span class="promo-arrow">→</span><code>INT64</code><span class="promo-reason">signed wins</span></div>
+<div class="promo-item"><code>FLOAT32+FLOAT64</code><span class="promo-arrow">→</span><code>FLOAT64</code><span class="promo-reason">widest float</span></div>
+<div class="promo-item"><code>REAL+COMPLEX</code><span class="promo-arrow">→</span><code>COMPLEX</code><span class="promo-reason">complex dominates</span></div>
+<div class="promo-item"><code>BOOL+ANY</code><span class="promo-arrow">→</span><code style="font-size:12px">other type</code><span class="promo-reason">bool→0/1</span></div>
+</div>
+<h3>Helper Functions</h3>
+<pre><code>size_t      dtype_size(DataType d);     // bytes per element
+const char* dtype_name(DataType d);     // "FLOAT64","INT32","COMPLEX128",…
+int         is_integer(DataType d);     // true for INT/UINT/BOOL
+DataType    promote_type(DataType a, DataType b);</code></pre>
+`},
+	headers:{ titleEn:'Header Files', titleZh:'头文件定义', html:`
+<style>
+.hdr-g { border:1px solid #e0e0e8; border-radius:8px; margin:12px 0; padding:14px 16px; }
+.hdr-g h3 { font-size:13px; color:#4f46e5; font-family:SF Mono,Fira Code,monospace; margin:0 0 4px; }
+.hdr-g p { font-size:12px; color:#666; margin:0; line-height:1.5; }
+</style>
+<p style="color:#666;font-size:13px;margin:0 0 12px;">16 header files in <code>include/</code>. All listed below with descriptions.</p>
+<div class="hdr-g"><h3>array.h</h3><p>Core header. <code>Array</code> struct, <code>DataType</code> enum, ~300 function declarations.</p></div>
+<div class="hdr-g"><h3>def.h</h3><p>Constants: <code>TRUE</code>/<code>FALSE</code>, <code>INF</code>/<code>NAN</code>, <code>M_PI</code>, <code>M_EPSILON_F32</code>.</p></div>
+<div class="hdr-g"><h3>random.h</h3><p>RNG engine + 49 distributions. xoshiro256** with splitmix64.</p></div>
+<div class="hdr-g"><h3>shape.h</h3><p>reshape, transpose, flatten, stack/hstack/vstack, split, tile, flip, etc.</p></div>
+<div class="hdr-g"><h3>function.h</h3><p>lcm, gcd_array, aldexp, left_shift/right_shift, less/less_equal, linspace, logspace, readtxt.</p></div>
+<div class="hdr-g"><h3>window.h</h3><p>bartlett, blackman, hamming, hanning, kaiser.</p></div>
+<div class="hdr-g"><h3>datetime64.h</h3><p>DateTime64 struct + DateTimeUnit enum. now, from_string, add/sub_days, is_busday.</p></div>
+<div class="hdr-g"><h3>io.h</h3><p>save_npy, load_npy, save_npz, load_npz, save, load.</p></div>
+<div class="hdr-g"><h3>linalg.h</h3><p>eig eigenvalue decomposition.</p></div>
+<div class="hdr-g"><h3>einsum.h</h3><p>einsum, einsum_path Einstein summation.</p></div>
+<div class="hdr-g"><h3>histogram.h</h3><p>histogram, histogram2d, histogramdd.</p></div>
+<div class="hdr-g"><h3>npzfile.h</h3><p>npzfile_open, npzfile_close, npzfile_keys, npzfile_get, bagobj_get.</p></div>
+<div class="hdr-g"><h3>utils.h</h3><p>nanargmax/min, nan_to_num, isnan_array, isinf_array, isfinite_array, unique, msort.</p></div>
+<div class="hdr-g"><h3>np_math_macros.h</h3><p>DEFINE_UNARY_FUNC macros, stride helpers, overflow detection.</p></div>
+<div class="hdr-g"><h3>_dt_utils.h</h3><p>Internal: unit_to_ns, is_holiday.</p></div>
+	`},
+	patterns:{ titleEn:'Usage Patterns', titleZh:'使用模式', html:`
+<style>
+.pattern { border:1px solid #e8e8f0; border-radius:10px; margin:20px 0; overflow:hidden; }
+.pattern-head { background:#fafaff; padding:14px 18px; border-bottom:1px solid #e8e8f0; display:flex; align-items:center; gap:10px; }
+.pattern-head h3 { margin:0; font-size:15px; flex:1; }
+.pattern-head .tag { font-size:10px; padding:2px 8px; border-radius:99px; background:#eef2ff; color:#4338ca; }
+.pattern-body { padding:16px 18px; }
+.pattern-body p { color:#555; font-size:13px; margin:0 0 10px; line-height:1.5; }
+.pattern-body pre { margin:0; }
+.result { background:#f0fdf4; border-left:3px solid #22c55e; padding:8px 14px; margin-top:10px; border-radius:0 6px 6px 0; font-size:13px; color:#15803d; }
+.result code { background:transparent; font-size:12px; }
+.section-intro { margin:28px 0 12px; padding-bottom:6px; border-bottom:2px solid #e8e8f0; }
+.section-intro h2 { font-size:18px; color:#333; margin:0; }
+.section-intro p { color:#888; font-size:13px; margin:4px 0 0; }
+</style>
+
+<p style="margin:0 0 16px;color:#555;font-size:14px;line-height:1.6;">A cookbook of practical examples covering the most common tasks — from creating arrays through linear algebra and signal processing. Each example is self-contained and ready to compile.</p>
+
+<div class="section-intro"><h2>Creating & Inspecting Arrays</h2><p>The fundamental building blocks.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Creating arrays from scratch</h3><span class="tag">create</span></div><div class="pattern-body">
+<p>Use <code>zeros</code> for pre-allocation, <code>arange</code> for sequences, <code>eye</code> for identity, and <code>full</code> for constant fill.</p>
+<pre><code>int s2[]  = {3, 4};
+int s1[]  = {10};
+
+Array *z  = zeros(s2, 2, FLOAT64);        // 3x4 of 0.0, buffer for computation
+Array *a  = arange(1, 10, 1, FLOAT64);    // 1-D: [1, 2, ..., 9]
+Array *I  = eye(3, 3, 0, FLOAT64);        // 3x3 identity matrix
+Array *f  = full(s2, 2, FLOAT64, &(double){3.14}); // 3x4 of 3.14
+Array *u  = empty(s2, 2, FLOAT64);        // uninitialized (faster, fill yourself)</code></pre>
+<div class="result">Tip: <code>zeros()</code> calls <code>calloc</code>; <code>empty()</code> skips init entirely. Use <code>empty()</code> only when you will overwrite every element.</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Casting between types</h3><span class="tag">create</span></div><div class="pattern-body">
+<p>Use <code>astype</code> to convert integer data to floating-point for division, or real to complex.</p>
+<pre><code>Array *ints   = arange(0, 10, 1, INT32);       // 0,1,...,9 in INT32
+Array *floats = astype(ints, FLOAT64);           // 0.0,1.0,...,9.0 in FLOAT64
+Array *cplx   = astype(floats, COMPLEX128);      // (0+0i),(1+0i),... with imag=0
+Array *realp  = astype(cplx, FLOAT64);           // keeps only the real part</code></pre>
+<div class="result">Warning: Complex to real keeps only the real part. Real to complex sets imag = 0.</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Inspecting arrays</h3><span class="tag">debug</span></div><div class="pattern-body">
+<p><code>print_array</code> shows values; <code>array_info</code> prints shape+dtype; <code>asize</code> gets axis length.</p>
+<pre><code>Array *A = ones((int[]){3,5}, 2, FLOAT64);
+print_array(A);          // formatted nested output
+array_info(A);           // prints: ndim, shape, dtype, total elements
+int nr = asize(A, 0);    // 3 (rows)
+int nc = asize(A, 1);    // 5 (cols)
+int tot = asize(A, -1);  // 15 (total elements)</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Changing Array Shape</h2><p>Reshape, stack, split, and broadcast without copying data.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Reshape, flatten, transpose</h3><span class="tag">shape</span></div><div class="pattern-body">
+<p>All three return views (no memory copy). <code>reshape</code> must preserve total element count.</p>
+<pre><code>Array *v = arange(1, 13, 1, FLOAT64);        // 1-D of 12 elements
+Array *M = reshape(v, (int[]){3, 4}, 2);      // view as 3x4 (same data!)
+Array *T = transpose(M);                       // view as 4x3 (still same data)
+Array *f = flatten(M);                         // 1-D copy (new allocation)</code></pre>
+<div class="result">Tip: <code>reshape</code> and <code>transpose</code> are O(1). They only update metadata. Modifying the view modifies the original!</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Stacking arrays together</h3><span class="tag">shape</span></div><div class="pattern-body">
+<p>Join arrays along a new axis (stack) or an existing axis (concatenate).</p>
+<pre><code>Array *a = arange(1,4,1,FLOAT64), *b = arange(4,7,1,FLOAT64);
+Array *vs = vstack((Array*[]){a,b}, 2);   // 2x3: 2 rows
+Array *hs = hstack((Array*[]){a,b}, 2);   // 1x6: 6 columns
+Array *st = stack((Array*[]){a,b}, 2, 0); // 2x3: new axis at position 0
+
+int s[] = {2,3};
+Array *X = ones(s,2,FLOAT64), *Y = zeros(s,2,FLOAT64);
+Array *Z = concatenate(X, Y, 0);          // 4x3 rows combined</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Broadcasting</h3><span class="tag">shape</span></div><div class="pattern-body">
+<p>Operations between a (3,4) matrix and a (4,) vector: the vector is implicitly stretched along axis 0.</p>
+<pre><code>int sA[] = {3, 4}, sB[] = {4};
+Array *A = ones(sA, 2, FLOAT64);               // 3x4 of 1.0
+Array *B = arange(1, 5, 1, FLOAT64);           // [1, 2, 3, 4]
+
+Array *C = add(A, B);         // B broadcast: (4,) to (1,4) to (3,4), then added
+// Result: each row of C = [2, 3, 4, 5]
+
+Array *D = multiply(A, B);    // same broadcast: each row = [1, 2, 3, 4]</code></pre>
+<div class="result">Broadcasting rules (NumPy-compatible): (1) prepend 1s to smaller ndim, (2) dims must be equal or one must be 1.</div>
+</div></div>
+
+<div class="section-intro"><h2>Statistics & Aggregation</h2><p>Reduce arrays along axes, compute descriptive statistics.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Axis control: keepdims explained</h3><span class="tag">stats</span></div><div class="pattern-body">
+<p><code>axis</code> selects which dimension to reduce. <code>keepdims</code> keeps the reduced axis as size-1 for broadcasting.</p>
+<pre><code>Array *M = reshape(arange(1,25,1,FLOAT64), (int[]){4,6}, 2);  // 4x6
+
+Array *colMean = mean(M, 0, 0);   // shape (6)  collapse rows
+Array *rowMean = mean(M, 1, 0);   // shape (4)  collapse columns
+Array *total   = mean(M, -1, 0);  // scalar (ndim=0) global average
+
+Array *cmK = mean(M, 0, 1);       // shape (1,6) ready to broadcast back
+Array *rmK = mean(M, 1, 1);       // shape (4,1) for demeaning columns</code></pre>
+<div class="result">Tip: <code>axis=-1</code> means flatten all first. <code>keepdims=1</code> is essential when you want to broadcast the result back for subtraction.</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Descriptive statistics</h3><span class="tag">stats</span></div><div class="pattern-body">
+<p>One-liners for common summaries. All return FLOAT64.</p>
+<pre><code>Array *data = random_normal(0.0, 1.0, (int[]){1000}, 1);  // N(0,1)
+
+Array *mu    = mean(data, -1, 0);    // population mean
+Array *sigma = std(data, -1, 0);     // population std (ddof=0)
+Array *svar  = var(data, -1, 1, 0);  // sample variance (ddof=1)
+Array *med   = median(data, -1, 0);  // median (sorts internally)
+double  q95   = *(double*)percentile(data,
+                 create_array((int[]){1},1,FLOAT64), -1)->data; // 95th percentile
+Array *rng   = ptp(data, -1, 0);     // range = max minus min</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Cumulative sum and differences</h3><span class="tag">stats</span></div><div class="pattern-body">
+<pre><code>Array *a  = arange(1, 7, 1, FLOAT64);    // [1,2,3,4,5,6]
+Array *cs = cumsum(a, -1);                // [1,3,6,10,15,21]
+Array *d1 = diff(a, 1, -1);               // [1,1,1,1,1] first difference
+Array *d2 = diff(a, 2, -1);               // [0,0,0,0] second difference</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Linear Algebra</h2><p>Matrix operations, decompositions, and solvers.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Matrix multiply</h3><span class="tag">linalg</span></div><div class="pattern-body">
+<p><code>matmul</code> for standard 2-D and batched. <code>dot</code> for vectors. <code>outer</code> for all-pairs products.</p>
+<pre><code>int s[]={3,3};
+Array *A = reshape(arange(1,10,1,FLOAT64),s,2), *B = eye(3,3,0,FLOAT64);
+Array *C = matmul(A, B);        // A @ B  3x3
+
+Array *v = arange(1,4,1,FLOAT64), *w = arange(4,7,1,FLOAT64);
+double dp = *(double*)dot(v,w)->data;       // 1x4+2x5+3x6 = 32
+Array *o = outer(v, w);                     // 3x3: v[i] * w[j]</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Solving Ax = b</h3><span class="tag">linalg</span></div><div class="pattern-body">
+<pre><code>int s[]={3,3}; double vals[] = {4,1,1, 1,3,1, 1,1,2};
+Array *A = create_array(s,2,FLOAT64); memcpy(A->data,vals,9*sizeof(double));
+Array *b = arange(1,4,1,FLOAT64);
+
+Array *Ai = inv(A);                         // inverse
+Array *x  = matmul(Ai, b);                  // solve A x = b
+
+Array *Ap = pinv(A, 1e-12);                // pseudoinverse (handles any shape)
+Array *xs = matmul(Ap, b);                  // least-squares solution</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>SVD and condition number</h3><span class="tag">linalg</span></div><div class="pattern-body">
+<pre><code>SVDResult r = svd(A, 1);              // economy SVD: A = U @ diag(s) @ Vt
+double smax = *(double*)r.s->data;    // largest singular value
+double smin = *(double*)(r.s->data + (r.s->size-1)*sizeof(double));
+double cond = smax / smin;            // condition number
+
+Array *UTU = matmul(transpose(r.U), r.U); // should be approx identity
+free_array(r.U); free_array(r.s); free_array(r.Vt);</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Cholesky decomposition</h3><span class="tag">linalg</span></div><div class="pattern-body">
+<p>For symmetric positive-definite matrices: A = L L^T.</p>
+<pre><code>Array *L    = cholesky(A);                // lower triangular
+Array *LT   = transpose(L);
+Array *check = matmul(L, LT);             // should equal A</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Signal Processing</h2><p>FFT, convolution, windows, and phase unwrapping.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>FFT round-trip</h3><span class="tag">fft</span></div><div class="pattern-body">
+<p>Forward FFT followed by inverse FFT recovers the original signal (within floating-point error).</p>
+<pre><code>Array *sig   = arange(1, 9, 1, FLOAT64);  // 8 real samples
+Array *spec  = fft(sig);                    // 8 complex frequency bins
+Array *recon = ifft(spec);                  // recovers sig within ~1e-14</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Spectrum analysis with real FFT</h3><span class="tag">fft</span></div><div class="pattern-body">
+<p>Use <code>rfft</code> for real-only data (faster, half the output). Combine with <code>hanning</code> window to reduce leakage.</p>
+<pre><code>int N = 1024; double dt = 0.001;              // 1 ms sample spacing
+Array *signal = random_normal(0, 1, (int[]){N}, 1);
+Array *half   = rfft(signal);                  // N/2+1 = 513 complex values
+Array *freq   = rfftfreq(N, dt);               // [0, 0.98, 1.95, ..., 500] Hz
+
+// Apply Hann window for cleaner spectrum
+Array *win    = hanning(N);
+Array *wind   = multiply(signal, win);
+Array *spec   = rfft(wind);                    // windowed spectrum
+Array *mag    = abs_array(spec);               // magnitude</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Convolution</h3><span class="tag">signal</span></div><div class="pattern-body">
+<p>result[k] = sum_i a[i] * v[k-i]. Equivalent to polynomial multiplication.</p>
+<pre><code>Array *a = arange(1, 4, 1, FLOAT64);      // [1, 2, 3]
+Array *b = arange(4, 7, 1, FLOAT64);      // [4, 5, 6]
+Array *c = convolve(a, b);                 // [4, 13, 28, 27, 18]
+// 4 = 1x4; 13 = 1x5+2x4; 28 = 1x6+2x5+3x4; ...</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Random Numbers</h2><p>Seeding, distributions, and sampling utilities.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Basic random generation</h3><span class="tag">random</span></div><div class="pattern-body">
+<pre><code>random_seed(42);                                  // deterministic for debugging
+Array *u  = random_uniform(-1, 1, (int[]){500}, 1);    // uniform in [-1,1)
+Array *n  = random_normal(0, 1, (int[]){500}, 1);      // standard normal
+Array *e  = random_exponential(1.5, (int[]){500}, 1);  // scale=1.5, mean=1.5
+Array *g  = random_gamma(2.0, 3.0, (int[]){500}, 1);  // shape=2, scale=3</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Permutation and sampling</h3><span class="tag">random</span></div><div class="pattern-body">
+<p><code>shuffle</code> is in-place; <code>permutation</code> returns a copy; <code>choice</code> supports weighted and unweighted draws.</p>
+<pre><code>Array *deck = arange(1, 53, 1, FLOAT64);            // 1..52
+
+random_shuffle(deck);                                // in-place
+
+Array *hand = random_choice(deck, 5, 0, NULL);       // 5 unique draws
+Array *boot = random_choice(deck, 100, 1, NULL);     // 100 with replacement
+
+// Weighted sampling
+Array *probs = random_dirichlet(ones((int[]){10},1,FLOAT64), NULL, 1);
+Array *wtd   = random_choice(deck, 10, 0, probs);    // 10 per weights</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Multivariate normal</h3><span class="tag">random</span></div><div class="pattern-body">
+<p>Sample from N(mu, Sigma). Uses Cholesky decomposition internally.</p>
+<pre><code>Array *mu     = arange(0, 3, 1, FLOAT64);             // [0, 1, 2]
+Array *Sigma  = eye(3, 3, 0, FLOAT64);                // independent dims
+// Add correlation: rho_12 = 0.5
+((double*)Sigma->data)[1] = 0.5; ((double*)Sigma->data)[3] = 0.5;
+
+Array *samps = random_multivariate_normal(mu, Sigma, (int[]){1000}, 1); // 1000x3</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Polynomials & Fitting</h2><p>Coefficient manipulation, root finding, and least-squares fitting.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Root finding</h3><span class="tag">poly</span></div><div class="pattern-body">
+<p><code>roots</code> uses companion matrix eigenvalues (Francis QR). <code>poly</code> reconstructs coefficients from roots.</p>
+<pre><code>// x^2 - 5x + 6 = (x-2)(x-3)
+Array *coeff = create_array((int[]){3}, 1, FLOAT64);
+double cvals[] = {1, -5, 6}; memcpy(coeff->data, cvals, 3*sizeof(double));
+Array *r  = roots(coeff);          // [3+0i, 2+0i]
+Array *p2 = poly(r);               // [1, -5, 6] coefficients reconstructed</code></pre>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Polynomial fitting</h3><span class="tag">poly</span></div><div class="pattern-body">
+<p>Least-squares fit to noisy data. Uses Vandermonde matrix + pseudoinverse under the hood.</p>
+<pre><code>Array *x    = linspace(-1, 1, 20);                     // 20 training points
+Array *y    = sin_array(multiply(x, x));                // y = sin(x^2)
+Array *c    = polyfit(x, y, 3);                         // cubic coefficients
+
+Array *xnew = linspace(-1, 1, 100);
+Array *yhat = polyval(c, xnew);                         // evaluate fit at new points</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Memory Management</h2><p>Ownership rules, avoiding leaks, and safe cleanup patterns.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>The ownership rule</h3><span class="tag">memory</span></div><div class="pattern-body">
+<p>Every factory function allocates. Every allocation must be freed exactly once. Views share the original data — do not free both.</p>
+<pre><code>Array *A = zeros((int[]){100,100}, 2, FLOAT64);   // allocates data buffer
+Array *B = A;                                       // same pointer
+Array *C = reshape(A, (int[]){10000}, 1);           // VIEW of same data
+Array *D = copy(A);                                 // independent copy
+
+free_array(A);    // frees the data buffer shared by A, B, C
+free_array(D);    // ok D has its own buffer
+// B and C are now dangling do NOT read or free them</code></pre>
+<div class="result">Rule: one <code>free_array</code> per allocation, not per pointer. Views (reshape, transpose, squeeze) do NOT allocate.</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Structured result cleanup</h3><span class="tag">memory</span></div><div class="pattern-body">
+<p>Decomposition functions return structs with multiple arrays. Free each member individually.</p>
+<pre><code>SVDResult r = svd(A, 1);
+// use r.U, r.s, r.Vt
+free_array(r.U); free_array(r.s); free_array(r.Vt);
+
+LUResult lr = lu(A);
+free_array(lr.P); free_array(lr.L); free_array(lr.U);
+
+UniqueResult ur = unique(A, 1, 0, 1);
+free_array(ur.values); free_array(ur.indices); free_array(ur.counts);</code></pre>
+</div></div>
+
+<div class="section-intro"><h2>Extending the Library</h2><p>How to add your own functions.</p></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Adding a unary math function</h3><span class="tag">extend</span></div><div class="pattern-body">
+<p>Use the <code>DEFINE_UNARY_FUNC</code> macro. Add helpers, instantiate once, declare, done.</p>
+<pre><code>// Step 1: Add helpers to include/np_math_macros.h
+static inline double  half_real(double x)          { return x * 0.5; }
+static inline float   half_realf(float x)           { return x * 0.5f; }
+
+// Step 2: Instantiate in a new .c file
+DEFINE_UNARY_FUNC_NOCOMPLEX(half_array, half_real, half_realf, half_reall)
+
+// Step 3: Declare in include/array.h
+// Array* half_array(Array *arr);
+
+// Step 4: Add the .c file to SRC_DIRS in the Makefile</code></pre>
+<div class="result">The <code>DEFINE_UNARY_FUNC</code> macro handles integer-to-float promotion, all dtype dispatch, complex support, and error checking automatically.</div>
+</div></div>
+
+<div class="pattern"><div class="pattern-head"><h3>Writing a test</h3><span class="tag">extend</span></div><div class="pattern-body">
+<pre><code>#include "array.h"
+
+int main() {
+    Array *a = arange(1, 4, 1, FLOAT64);
+    Array *r = half_array(a);               // call the new function
+    printf("Expected [0.5, 1.0, 1.5]: "); print_array(r);
+
+    free_array(a); free_array(r);
+    return 0;
+}</code></pre>
+</div></div>
+`},
+};
+
+/* ═══ Router ═══ */
+function __(en, zh) { return (LANG === 'zh' && zh) ? zh : en; }
+
+function navTo(page) { window.location.hash = page; }
+
+function esc(s) { return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function render(page) {
+  var main = document.getElementById('main');
+  document.querySelectorAll('nav .mod').forEach(function(a){a.classList.toggle('active', a.dataset.page === page)});
+
+  if (page.startsWith('fn:')) {
+    var key = page.slice(3), f = FNS[key];
+    if (!f) { main.innerHTML = '<div class="page active"><h2>'+__('Not found','未找到')+'</h2></div>'; return; }
+    var iz = I18N.fn[key] || {};
+    var modName = (I18N.modules[f.m] && I18N.modules[f.m].name) ? (LANG==='zh'?I18N.modules[f.m].name:MODULES[f.m].name) : MODULES[f.m].name;
+    var h = '<div class="page active fn-detail">';
+    h += '<a class="back-link" onclick="' + "navTo('" + f.m + "')" + '">'+__('&#x2190; Back to ','&#x2190; 返回 ')+modName+'</a>';
+    h += '<h2>'+key+'</h2><div class="sig-block">'+esc(f.sig)+'</div><p>'+esc((LANG==='zh'&&iz.desc)?iz.desc:f.desc)+'</p>';
+    if (f.params && f.params.length) {
+      h += '<section><h3>'+__('Parameters','参数')+'</h3><table class="param-table"><tr><th>'+__('Name','名称')+'</th><th>'+__('Type','类型')+'</th><th>'+__('Description','说明')+'</th></tr>';
+      for (var i = 0; i < f.params.length; i++) {
+        var p = f.params[i];
+        var pd = (LANG==='zh' && iz.params && iz.params[i]) || p[2];
+        h += '<tr><td><code>'+p[0]+'</code></td><td>'+p[1]+'</td><td>'+pd+'</td></tr>';
+      }
+      h += '</table></section>';
+    }
+    if (f.ret) h += '<section><h3>'+__('Returns','返回值')+'</h3><p>'+esc((LANG==='zh'&&iz.ret)?iz.ret:f.ret)+'</p></section>';
+    var nts = (LANG==='zh'&&iz.notes)?iz.notes:f.notes;
+    if (nts) h += '<section><h3>'+__('Notes','注意事项')+'</h3><div class="note">'+esc(nts)+'</div></section>';
+    if (f.example) h += '<section><h3>'+__('Example','示例')+'</h3><pre><code>'+esc(f.example)+'</code></pre></section>';
+    if (f.rel && f.rel.length) {
+      h += '<section><h3>'+__('Related','相关函数')+'</h3><div class="related">';
+      for (var ri = 0; ri < f.rel.length; ri++) {
+        var r = f.rel[ri];
+        if (FNS[r]) h += '<a href="#fn:'+r+'" onclick="event.preventDefault();' + "navTo('fn:" + r + "')" + '">'+r+'</a>';
+        else h += '<span style="font-size:12px;color:#999;padding:3px 6px">'+r+'</span>';
+      }
+      h += '</div></section>';
+    }
+    main.innerHTML = h + '</div>';
+    return;
+  }
+
+  if (PAGES[page]) {
+    var content = (LANG === 'zh' && I18N.pages[page]) ? I18N.pages[page] : PAGES[page].html;
+    var pt = (LANG==='zh' && PAGES[page].titleZh) ? PAGES[page].titleZh : (PAGES[page].titleEn || '');
+    main.innerHTML = '<div class="page active"><h2>'+pt+'</h2>'+content+'</div>';
+    return;
+  }
+
+  if (MODULES[page]) {
+    var mod = MODULES[page];
+    var zm = I18N.modules[page] || {};
+    var funcs = Object.entries(FNS).filter(function(e){return e[1].m===page}).sort(function(a,b){return a[0].localeCompare(b[0])});
+    var h2 = '<div class="page active"><div class="module-header"><h2>'+(LANG==='zh'&&zm.name?zm.name:mod.name)+'</h2><p>'+(LANG==='zh'&&zm.desc?zm.desc:mod.desc)+' - '+funcs.length+' functions</p></div>';
+    h2 += '<table class="fn-table"><tr><th>'+__('Function','函数')+'</th><th>'+__('Signature','签名')+'</th></tr>';
+    for (var fi = 0; fi < funcs.length; fi++) {
+      var k = funcs[fi][0], f2 = funcs[fi][1];
+      h2 += '<tr><td class="fn-name" onclick="' + "navTo('fn:" + k + "')" + '">'+k+'</td><td class="fn-sig">'+esc(f2.sig)+'</td></tr>';
+    }
+    main.innerHTML = h2 + '</table></div>';
+    return;
+  }
+
+  // Home
+  var h3 = '<div class="page active">';
+  var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy).','基于C独立实现的数值运算基础库（类似NumPy）。');
+  h3 += '<div class="hero"><h1>N<span>umy</span>P C</h1><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span></div>';
+
+  // Build CSS as array of strings (avoids multi-line single-quoted string issue)
+  var css = [];
+  css.push('.install-wrap { text-align:center; padding:28px 0 18px; }');
+  css.push('.install-wrap .install-label { font-weight:600; font-size:15px; margin-bottom:12px; color:#333; }');
+  css.push('.install-bar { background:#2d2d30; border-radius:10px; overflow:hidden; display:inline-flex; flex-direction:column; max-width:100%; }');
+  css.push('.install-bar .tabs { display:flex; gap:0; border-bottom:1px solid #3e3e42; }');
+  css.push('.install-bar .tabs .tab { background:transparent; border:none; color:#6e6e73; padding:9px 16px; font-size:12px; font-weight:600; cursor:pointer; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }');
+  css.push('.install-bar .tabs .tab:hover { color:#a0a0a8; }');
+  css.push('.install-bar .tabs .tab.active { color:#e2e8f0; border-bottom-color:#4f46e5; }');
+  css.push('.install-bar .cmd-row { display:flex; align-items:center; gap:14px; padding:14px 18px; }');
+  css.push('.install-bar .cmd { flex:1; font-family:SF Mono,Fira Code,monospace; font-size:13.5px; color:#c0c0c8; white-space:nowrap; overflow-x:auto; background:transparent; padding:0; }');
+  css.push('.install-bar .copy-btn { flex-shrink:0; background:#4f46e5; color:#fff; border:none; padding:7px 16px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background .15s; }');
+  css.push('.install-bar .copy-btn:hover { background:#4338ca; }');
+  css.push('.install-bar .copy-btn.copied { background:#059669; }');
+  css.push('.dep-row { display:flex; justify-content:center; gap:28px; flex-wrap:wrap; margin:14px 0 0; }');
+  css.push('.dep-item { display:flex; align-items:center; gap:6px; font-size:12px; color:#888; }');
+  css.push('.dep-item b { color:#555; }');
+  css.push('.dep-item .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }');
+  css.push('.dot-ok { background:#22c55e; }');
+  css.push('.dot-opt { background:#f59e0b; }');
+  css.push('.cmd-hint { text-align:center; color:#aaa; font-size:12px; margin-top:8px; }');
+  css.push('.quick-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:42px; padding-top:32px; border-top:1px solid #e8e8f0; }');
+  css.push('.quick-cards .qc { border:1px solid #e8e8f0; border-radius:10px; padding:16px 18px; cursor:pointer; transition:box-shadow .15s; }');
+  css.push('.quick-cards .qc:hover { border-color:#4f46e5; box-shadow:0 2px 12px rgba(0,0,0,.06); }');
+  css.push('.quick-cards .qc h3 { font-size:14px; color:#4f46e5; margin:0 0 4px; }');
+  css.push('.quick-cards .qc p { font-size:12px; color:#888; margin:0; line-height:1.4; }');
+  css.push('@media (max-width:600px) { .quick-cards { grid-template-columns:1fr; } }');
+  h3 += '<style>'+css.join('')+'</style>';
+
+  h3 += '<div class="install-wrap">';
+  h3 += '<div class="install-label">'+__('Get started in one command','一行命令快速安装')+'</div>';
+  h3 += '<div class="install-bar" id="installBar">';
+  h3 += '<div class="tabs">';
+  h3 += '<button class="tab active" data-os="macos" onclick="' + "switchOS('macos')" + '">macOS</button>';
+  h3 += '<button class="tab" data-os="ubuntu" onclick="' + "switchOS('ubuntu')" + '">Ubuntu</button>';
+  h3 += '<button class="tab" data-os="kylin" onclick="' + "switchOS('kylin')" + '">Kylin</button>';
+  h3 += '<button class="tab" data-os="raspi" onclick="' + "switchOS('raspi')" + '">Raspberry Pi</button>';
+  h3 += '<button class="tab" data-os="windows" onclick="' + "switchOS('windows')" + '">Windows</button>';
+  h3 += '</div>';
+  h3 += '<div class="cmd-row">';
+  h3 += '<code class="cmd" id="installCmd">brew install libzip &amp;&amp; git clone https://github.com/xiayang558/libnpc &amp;&amp; cd libnpc &amp;&amp; make &amp;&amp; make shared &amp;&amp; sudo make install</code>';
+  h3 += '<button class="copy-btn" id="copyBtn" onclick="copyInstall()">Copy</button>';
+  h3 += '</div>';
+  h3 += '</div>';
+  h3 += '<div class="dep-row">';
+  h3 += '<div class="dep-item"><span class="dot dot-ok"></span> '+__('Requires','需要')+' <b>Git</b>, <b>GCC</b> or <b>Clang</b>, <b>GNU Make</b></div>';
+  h3 += '<div class="dep-item"><span class="dot dot-opt"></span> '+__('Optional','可选')+' <b>libzip</b> (NPZ files)</div>';
+  h3 += '</div>';
+  var hintEn = 'Paste into your terminal and press Enter. Installs <code>libnpc.a</code> + <code>libnpc<span class=\"ext\"></span></code> + headers to <code>/usr/local</code>.';
+  var hintZh = '粘贴到终端并按回车。将 <code>libnpc.a</code> + <code>libnpc<span class=\"ext\"></span></code> + 头文件安装到 <code>/usr/local</code>。';
+  h3 += '<div class="cmd-hint">'+__(hintEn, hintZh)+'</div>';
+  h3 += '</div>';
+  h3 += '<div class="quick-cards">';
+  h3 += '<div class="qc" onclick="' + "navTo('install')" + '"><h3>&#x1F4E6; '+__('Full Install Guide','完整安装指南')+'</h3><p>'+__('Cross-platform notes, linker flags, Makefile targets','跨平台说明、链接选项、Makefile 目标')+'</p></div>';
+  h3 += '<div class="qc" onclick="' + "navTo('patterns')" + '"><h3>&#x1F4D6; '+__('Usage Examples','使用示例')+'</h3><p>'+__('Broadcasting, SVD, FFT, random, polynomial fitting','广播、SVD、FFT、随机数、多项式拟合')+'</p></div>';
+  h3 += '<div class="qc" onclick="' + "navTo('create')" + '"><h3>&#x1F3D7;&#xFE0F; '+__('Browse API','浏览API')+'</h3><p>'+__('Start with Array Creation — zeros, arange, eye, linspace','从数组创建开始——zeros、arange、eye、linspace…')+'</p></div>';
+  h3 += '<div class="qc" onclick="' + "navTo('linalg')" + '"><h3>&#x1F9EE; '+__('Linear Algebra','线性代数')+'</h3><p>matmul, svd, qr, lu, cholesky, inv, pinv, det</p></div>';
+  h3 += '</div>';
+
+  main.innerHTML = h3 + '</div>';
+
+  var osCmds = {
+    macos:   "brew install libzip && git clone https://github.com/xiayang558/libnpc && cd libnpc && make && make shared && sudo make install",
+    ubuntu:  "sudo apt install -y libzip-dev && git clone https://github.com/xiayang558/libnpc && cd libnpc && make && make shared && sudo make install",
+    kylin:   "sudo yum install -y libzip-devel && git clone https://github.com/xiayang558/libnpc && cd libnpc && make && make shared && sudo make install",
+    raspi:   "sudo apt install -y libzip-dev && git clone https://github.com/xiayang558/libnpc && cd libnpc && make && make shared && sudo make install",
+    windows: "pacman -S --noconfirm libzip && git clone https://github.com/xiayang558/libnpc && cd libnpc && make && make shared && make install"
+  };
+  var osExt = { macos:".dylib", ubuntu:".so", kylin:".so", raspi:".so", windows:".dll" };
+  var currentOS = "macos";
+
+  window.switchOS = function(os) {
+    currentOS = os;
+    document.querySelectorAll("#installBar .tab").forEach(function(t){t.classList.toggle("active", t.dataset.os === os)});
+    document.getElementById("installCmd").textContent = osCmds[os];
+    var extEl = document.querySelector(".ext");
+    if (extEl) extEl.textContent = osExt[os];
+    var btn = document.getElementById("copyBtn");
+    btn.textContent = "Copy"; btn.classList.remove("copied");
+  };
+
+  window.copyInstall = function() {
+    var cmd = osCmds[currentOS];
+    var btn = document.getElementById("copyBtn");
+    var done = function() {
+      btn.textContent = __("Copied!","已复制");
+      btn.classList.add("copied");
+      setTimeout(function(){btn.textContent="Copy";btn.classList.remove("copied")}, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cmd).then(done).catch(function(){fallbackCopy(cmd);done()});
+    } else { fallbackCopy(cmd); done(); }
+  };
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.left = "-9999px";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
+  setTimeout(function() {
+    var extEl = document.querySelector(".ext");
+    if (extEl) extEl.textContent = osExt[currentOS];
+  }, 50);
+}
+
+/* ── Language switch ── */
+window.switchLang = function(l) {
+  try { localStorage.setItem('npc_lang', l); } catch(e) {}
+  LANG = l;
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.dataset.l===l)});
+  updateSidebar();
+  const h = window.location.hash.slice(1);
+  render(h || 'home');
+};
+
+function updateSidebar() {
+  var refNames = {datatypes:{en:'Data Types',zh:'数据类型'},install:{en:'Installation',zh:'安装指南'},patterns:{en:'Usage Patterns',zh:'使用模式'},headers:{en:'Header Files',zh:'头文件定义'}};
+  document.querySelectorAll('nav .mod').forEach(function(a){
+    var k = a.dataset.page;
+    if (refNames[k]) { a.textContent = refNames[k][LANG]; return; }
+    if (I18N.modules[k] && I18N.modules[k].name) {
+      a.textContent = LANG === 'zh' ? I18N.modules[k].name : MODULES[k].name;
+    }
+  });
+  document.querySelector('.nav-title').textContent = LANG === 'zh' ? 'NumPy C' : 'NumPy C';
+  document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0 · 324文件 · 276函数' : 'v1.0 · 324 files · 276 funcs';
+  const si = document.getElementById('quickSearch');
+  if (si) si.placeholder = LANG === 'zh' ? '搜索函数…' : 'Search function…';
+  // Update section headers
+  var labelMap = {
+    'Overview': { zh:'概览', en:'Overview' },
+    '概览': { zh:'概览', en:'Overview' },
+    'Modules': { zh:'API 模块', en:'Modules' },
+    '模块': { zh:'API 模块', en:'Modules' },
+    'API 模块': { zh:'API 模块', en:'Modules' }
+  };
+  var seps = document.querySelectorAll('nav .sep');
+  seps.forEach(function(s){
+    var t = s.textContent.trim();
+    if (labelMap[t]) s.textContent = labelMap[t][LANG];
+  });
+}
+
+// Init lang immediately (DOM is already parsed at this point)
+updateSidebar();
+
+function quickFind() {
+  const q = document.getElementById('quickSearch').value.trim().toLowerCase(); if (!q) return;
+  if (FNS[q]) { navTo('fn:'+q); return; }
+  for (const k of Object.keys(FNS)) if (k.toLowerCase().includes(q)) { navTo('fn:'+k); return; }
+  for (const [k,f] of Object.entries(FNS)) if ((f.desc||'').toLowerCase().includes(q)) { navTo('fn:'+k); return; }
+  alert(__('No function matching "','未找到匹配函数 "')+q+'"');
+}
+
+document.getElementById('nav').addEventListener('click', e => {
+  const mod = e.target.closest('.mod');
+  if (mod && mod.dataset.page) { e.preventDefault(); navTo(mod.dataset.page); }
+});
+
+window.addEventListener('hashchange', () => { const h = window.location.hash.slice(1); render(h || 'home'); });
+render(window.location.hash ? window.location.hash.slice(1) : 'home');
+</script>
+</body>
+</html>
