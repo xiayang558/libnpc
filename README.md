@@ -1,8 +1,8 @@
-# libnpc: NumPy C Library
-
-[中文版](README_zh.md)
-
-<p align="center"><img src="pic/logo.png" alt="libnpc logo" width="200"></p>
+<p align="center">
+  <img src="pic/logo.png" alt="libnpc" width="160"><br>
+  <strong>libnpc: NumPy C Library</strong><br>
+  <a href="README_zh.md">中文版</a>
+</p>
 
 A numerical operation basic library independently implemented based on C (similar to NumPy).
 
