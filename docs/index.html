@@ -80,6 +80,7 @@ main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display:
     <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
   </div>
   <div class="ver">v1.0 · 324 files · 276 funcs</div>
+  <a href="https://github.com/xiayang558/libnpc" target="_blank" style="display:block;text-align:center;font-size:12px;color:#555;margin-bottom:6px;text-decoration:none">&#x2B50; GitHub</a>
   <input type="search" id="quickSearch" placeholder="Search function…" onkeydown="if(event.key==='Enter')quickFind()">
   <span class="sep">Overview</span>
   <a class="mod" data-page="install">Installation</a>
@@ -317,7 +318,7 @@ DataType    promote_type(DataType a, DataType b);</code></pre>
 <div class="hdr-g"><h3>np_math_macros.h</h3><p>DEFINE_UNARY_FUNC macros, stride helpers, overflow detection.</p></div>
 <div class="hdr-g"><h3>_dt_utils.h</h3><p>Internal: unit_to_ns, is_holiday.</p></div>
 	`},
-	patterns:{ titleEn:'Usage Patterns', titleZh:'使用模式', html:`
+	patterns:{ titleEn:'Example', titleZh:'示例', html:`
 <style>
 .pattern { border:1px solid #e8e8f0; border-radius:10px; margin:20px 0; overflow:hidden; }
 .pattern-head { background:#fafaff; padding:14px 18px; border-bottom:1px solid #e8e8f0; display:flex; align-items:center; gap:10px; }
@@ -699,7 +700,7 @@ function render(page) {
   var h3 = '<div class="page active">';
   var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy).','基于C独立实现的数值运算基础库（类似NumPy）。');
     h3 += '<div style="text-align:center;margin:20px 0"><img src="https://raw.githubusercontent.com/xiayang558/libnpc/main/pic/logo1.png" alt="libnpc" style="height:80px"></div>';
-  h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span></div>';
+  h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span><div style="margin-top:10px"><a href="https://github.com/xiayang558/libnpc" target="_blank" class="badge" style="text-decoration:none;font-size:11px;padding:4px 12px">&#x2B50; Star on GitHub</a></div></div>';
 
   // Build CSS as array of strings (avoids multi-line single-quoted string issue)
   var css = [];
@@ -731,7 +732,7 @@ function render(page) {
   h3 += '<style>'+css.join('')+'</style>';
 
   h3 += '<div class="install-wrap">';
-  h3 += '<div class="install-label">'+__('Get started in one command','一行命令快速安装')+'</div>';
+  h3 += '<div class="install-label">'+__('Get started','快速安装')+'</div>';
   h3 += '<div class="install-bar" id="installBar">';
   h3 += '<div class="tabs">';
   h3 += '<button class="tab active" data-os="macos" onclick="' + "switchOS('macos')" + '">macOS</button>';
@@ -819,7 +820,7 @@ window.switchLang = function(l) {
 };
 
 function updateSidebar() {
-  var refNames = {datatypes:{en:'Data Types',zh:'数据类型'},install:{en:'Installation',zh:'安装指南'},patterns:{en:'Usage Patterns',zh:'使用模式'},headers:{en:'Header Files',zh:'头文件定义'}};
+  var refNames = {datatypes:{en:'Data Types',zh:'数据类型'},install:{en:'Installation',zh:'安装指南'},patterns:{en:'Example',zh:'示例'},headers:{en:'Header Files',zh:'头文件定义'}};
   document.querySelectorAll('nav .mod').forEach(function(a){
     var k = a.dataset.page;
     if (refNames[k]) { a.textContent = refNames[k][LANG]; return; }
