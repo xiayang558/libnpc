@@ -1,7 +1,7 @@
 # libnpc
 
 <div align="center">
-    <img src="pic/logo.png" alt="Logo" style="width:160px; height:auto;">
+    <img src="pic/logo1.png" alt="Logo" style="width:400px; height:auto;">
 </div>
 <h1 align="center">NumPy C 库</h1>
 
