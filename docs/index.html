@@ -74,7 +74,7 @@ main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display:
 </head>
 <body>
 <nav id="nav">
-  <h1 onclick="navTo('home')">&#x25C6; <span class="nav-title">NumPy C</span></h1>
+  <div onclick="navTo('home')" style="cursor:pointer;text-align:center;margin-bottom:6px"><img src="../pic/logo.png" alt="libnpc" style="width:100px;height:auto"></div>
   <div class="lang-toggle">
     <button class="lang-btn active" data-l="zh" onclick="switchLang('zh')" title="简体中文">中</button>
     <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
@@ -698,7 +698,8 @@ function render(page) {
   // Home
   var h3 = '<div class="page active">';
   var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy).','基于C独立实现的数值运算基础库（类似NumPy）。');
-  h3 += '<div class="hero"><h1>N<span>umy</span>P C</h1><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span></div>';
+    h3 += '<div style="text-align:center;margin:20px 0"><img src="../pic/logo.png" alt="libnpc" style="height:72px"></div>';
+  h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span></div>';
 
   // Build CSS as array of strings (avoids multi-line single-quoted string issue)
   var css = [];
@@ -826,7 +827,6 @@ function updateSidebar() {
       a.textContent = LANG === 'zh' ? I18N.modules[k].name : MODULES[k].name;
     }
   });
-  document.querySelector('.nav-title').textContent = LANG === 'zh' ? 'NumPy C' : 'NumPy C';
   document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0 · 324文件 · 276函数' : 'v1.0 · 324 files · 276 funcs';
   const si = document.getElementById('quickSearch');
   if (si) si.placeholder = LANG === 'zh' ? '搜索函数…' : 'Search function…';
