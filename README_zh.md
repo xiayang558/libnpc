@@ -3,7 +3,7 @@
 <div align="center">
     <img src="pic/logo.png" alt="Logo" style="width:160px; height:auto;">
 </div>
-<h1 align="center">libnpc: NumPy C 库</h1>
+<h1 align="center">NumPy C 库</h1>
 
 - [libnpc](#libnpc)
   - [1. 项目简介](#1-项目简介)

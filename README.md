@@ -3,7 +3,7 @@
 <div align="center">
     <img src="pic/logo.png" alt="Logo" style="width:160px; height:auto;">
 </div>
-<h1 align="center">libnpc: NumPy C Library</h1>
+<h1 align="center">NumPy C Library</h1>
 
 - [libnpc](#libnpc)
   - [1. Introduction](#1-introduction)
