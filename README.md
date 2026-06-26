@@ -7,9 +7,9 @@
 
 - [libnpc](#libnpc)
   - [1. Introduction](#1-introduction)
-  - [2. Data Types](#2-data-types)
-  - [3. Quick Start](#3-quick-start)
-  - [4. Build & Install](#4-build--install)
+  - [2. Build & Install](#2-build--install)
+  - [3. Data Types](#3-data-types)
+  - [4. Quick Start](#4-quick-start)
   - [5. Module Overview](#5-module-overview)
   - [6. API Reference](#6-api-reference)
   - [7. Architecture](#7-architecture)
@@ -22,7 +22,45 @@ A numerical operation basic library independently implemented based on C (simila
 
 ***[Browse the API Documentation (HTML)](https://github.com/xiayang558/libnpc/blob/main/docs/index.html)***
 
-## 2. Data Types
+## 2. Build & Install
+
+### Requirements
+- C99 or later compiler (GCC / Clang)
+- `libm` (math library, standard on all systems)
+- `libzip` (for NPZ file I/O — `brew install libzip` on macOS, `apt install libzip-dev` on Linux)
+
+### Build
+```shell
+git clone https://github.com/xiayang558/libnpc.git
+cd libnpc
+make             # build static library  → lib/libnpc.a
+make shared      # build shared library  → lib/libnpc.so / lib/libnpc.dylib
+make test        # build + run all 58 test suites
+make install     # install to /usr/local  (override with PREFIX=/custom/path)
+```
+
+### Link Into Your Project
+**Static link** (self-contained binary):
+```shell
+gcc -Ipath/to/libnpc/include -c myfile.c
+gcc myfile.o path/to/libnpc/lib/libnpc.a -lm -lzip -o myapp
+```
+
+**Shared link** (smaller binary, needs .so/.dylib at runtime):
+```shell
+gcc -Ipath/to/libnpc/include -c myfile.c
+gcc myfile.o -Lpath/to/libnpc/lib -lnpc -lm -lzip \
+    -Wl,-rpath,path/to/libnpc/lib -o myapp
+```
+
+If installed to `/usr/local`:
+```shell
+gcc myfile.o -lnpc -lm -lzip -o myapp
+```
+
+
+
+## 3. Data Types
 | Enum | C Type | Size | NumPy Equivalent |
 |:----:|:------:|:----:|:----------------:|
 | `BOOL` | `uint8_t` | 1 B | `bool_` |
@@ -51,7 +89,7 @@ Type promotion rules for binary operations:
 - `REAL + COMPLEX` → `COMPLEX` (complex dominates)
 - `BOOL + ANY` → other type (bool → 0/1)
 
-## 3. Quick Start
+## 4. Quick Start
 
 ```c
 #include "array.h"
@@ -90,42 +128,6 @@ int main() {
     free_array(spectrum); free_array(samples); free_array(coeffs);
     return 0;
 }
-```
-
-## 4. Build & Install
-
-### Requirements
-- C99 or later compiler (GCC / Clang)
-- `libm` (math library, standard on all systems)
-- `libzip` (for NPZ file I/O — `brew install libzip` on macOS, `apt install libzip-dev` on Linux)
-
-### Build
-```shell
-git clone https://github.com/xiayang558/libnpc.git
-cd libnpc
-make             # build static library  → lib/libnpc.a
-make shared      # build shared library  → lib/libnpc.so / lib/libnpc.dylib
-make test        # build + run all 58 test suites
-make install     # install to /usr/local  (override with PREFIX=/custom/path)
-```
-
-### Link Into Your Project
-**Static link** (self-contained binary):
-```shell
-gcc -Ipath/to/libnpc/include -c myfile.c
-gcc myfile.o path/to/libnpc/lib/libnpc.a -lm -lzip -o myapp
-```
-
-**Shared link** (smaller binary, needs .so/.dylib at runtime):
-```shell
-gcc -Ipath/to/libnpc/include -c myfile.c
-gcc myfile.o -Lpath/to/libnpc/lib -lnpc -lm -lzip \
-    -Wl,-rpath,path/to/libnpc/lib -o myapp
-```
-
-If installed to `/usr/local`:
-```shell
-gcc myfile.o -lnpc -lm -lzip -o myapp
 ```
 
 ## 5. Module Overview

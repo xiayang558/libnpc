@@ -7,9 +7,9 @@
 
 - [libnpc](#libnpc)
   - [1. 项目简介](#1-项目简介)
-  - [2. 数据类型](#2-数据类型)
-  - [3. 快速入门](#3-快速入门)
-  - [4. 编译安装](#4-编译安装)
+  - [2. 编译安装](#2-编译安装)
+  - [3. 数据类型](#3-数据类型)
+  - [4. 快速入门](#4-快速入门)
   - [5. 模块总览](#5-模块总览)
   - [6. API 参考](#6-api-参考)
   - [7. 架构说明](#7-架构说明)
@@ -22,7 +22,45 @@
 
 ***[Browse the API Documentation (HTML)](https://github.com/xiayang558/libnpc/blob/main/docs/index.html)***
 
-## 2. 数据类型
+## 2. 编译安装
+
+### 系统要求
+- C99 或更高版本编译器（GCC / Clang）
+- `libm`（数学库，所有系统自带）
+- `libzip`（NPZ 文件读写 — macOS 执行 `brew install libzip`，Linux 执行 `apt install libzip-dev`）
+
+### 编译
+```shell
+git clone https://github.com/xiayang558/libnpc.git
+cd libnpc
+make             # 编译静态库 → lib/libnpc.a
+make shared      # 编译共享库 → lib/libnpc.so / lib/libnpc.dylib
+make test        # 编译并运行全部 58 个测试套件
+make install     # 安装到 /usr/local（可通过 PREFIX=/custom/path 覆盖）
+```
+
+### 链接到你的项目
+**静态链接**（独立二进制文件）：
+```shell
+gcc -Ipath/to/libnpc/include -c myfile.c
+gcc myfile.o path/to/libnpc/lib/libnpc.a -lm -lzip -o myapp
+```
+
+**共享链接**（需要 .so/.dylib 在运行时可用）：
+```shell
+gcc -Ipath/to/libnpc/include -c myfile.c
+gcc myfile.o -Lpath/to/libnpc/lib -lnpc -lm -lzip \
+    -Wl,-rpath,path/to/libnpc/lib -o myapp
+```
+
+如果已安装到 `/usr/local`：
+```shell
+gcc myfile.o -lnpc -lm -lzip -o myapp
+```
+
+
+
+## 3. 数据类型
 | 枚举 | C 类型 | 大小 | NumPy 对应 |
 |:----:|:------:|:----:|:----------:|
 | `BOOL` | `uint8_t` | 1 B | `bool_` |
@@ -51,7 +89,7 @@
 - `REAL + COMPLEX` → `COMPLEX`（复数优先）
 - `BOOL + ANY` → 其他类型（布尔转为0/1）
 
-## 3. 快速入门
+## 4. 快速入门
 
 ```c
 #include "array.h"
@@ -90,42 +128,6 @@ int main() {
     free_array(spectrum); free_array(samples); free_array(coeffs);
     return 0;
 }
-```
-
-## 4. 编译安装
-
-### 系统要求
-- C99 或更高版本编译器（GCC / Clang）
-- `libm`（数学库，所有系统自带）
-- `libzip`（NPZ 文件读写 — macOS 执行 `brew install libzip`，Linux 执行 `apt install libzip-dev`）
-
-### 编译
-```shell
-git clone https://github.com/xiayang558/libnpc.git
-cd libnpc
-make             # 编译静态库 → lib/libnpc.a
-make shared      # 编译共享库 → lib/libnpc.so / lib/libnpc.dylib
-make test        # 编译并运行全部 58 个测试套件
-make install     # 安装到 /usr/local（可通过 PREFIX=/custom/path 覆盖）
-```
-
-### 链接到你的项目
-**静态链接**（独立二进制文件）：
-```shell
-gcc -Ipath/to/libnpc/include -c myfile.c
-gcc myfile.o path/to/libnpc/lib/libnpc.a -lm -lzip -o myapp
-```
-
-**共享链接**（需要 .so/.dylib 在运行时可用）：
-```shell
-gcc -Ipath/to/libnpc/include -c myfile.c
-gcc myfile.o -Lpath/to/libnpc/lib -lnpc -lm -lzip \
-    -Wl,-rpath,path/to/libnpc/lib -o myapp
-```
-
-如果已安装到 `/usr/local`：
-```shell
-gcc myfile.o -lnpc -lm -lzip -o myapp
 ```
 
 ## 5. 模块总览
