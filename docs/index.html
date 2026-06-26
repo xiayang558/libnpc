@@ -74,7 +74,7 @@ main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display:
 </head>
 <body>
 <nav id="nav">
-  <div onclick="navTo('home')" style="cursor:pointer;text-align:center;margin-bottom:6px"><img src="../pic/logo.png" alt="libnpc" style="width:100px;height:auto"></div>
+  <div onclick="navTo('home')" style="cursor:pointer;text-align:center;margin-bottom:6px"><img src="https://raw.githubusercontent.com/xiayang558/libnpc/main/pic/logo.png" alt="libnpc" style="width:100px;height:auto"></div>
   <div class="lang-toggle">
     <button class="lang-btn active" data-l="zh" onclick="switchLang('zh')" title="简体中文">中</button>
     <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
@@ -698,7 +698,7 @@ function render(page) {
   // Home
   var h3 = '<div class="page active">';
   var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy).','基于C独立实现的数值运算基础库（类似NumPy）。');
-    h3 += '<div style="text-align:center;margin:20px 0"><img src="../pic/logo.png" alt="libnpc" style="height:72px"></div>';
+    h3 += '<div style="text-align:center;margin:20px 0"><img src="https://raw.githubusercontent.com/xiayang558/libnpc/main/pic/logo.png" alt="libnpc" style="height:72px"></div>';
   h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span></div>';
 
   // Build CSS as array of strings (avoids multi-line single-quoted string issue)
