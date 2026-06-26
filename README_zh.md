@@ -1,6 +1,8 @@
+# NumPy C 库
+
 [English](README.md)
 
-# NumPy C 库
+<p align="center"><img src="pic/logo.png" alt="libnpc logo" width="200"></p>
 
 基于C独立实现的数值运算基础库（类似NumPy）。
 
