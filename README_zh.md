@@ -147,7 +147,7 @@ int main() {
 | 形状操作 | reshape, transpose, flatten, ravel, squeeze, expand_dims, tile, repeat, stack/hstack/vstack, split, flip, roll, broadcast | 25+ |
 | 比较与逻辑 | greater, equal, less, isclose, logical_and/or/xor/not, all, any, where, count_nonzero | 15+ |
 | 搜索与集合 | unique, intersect1d, setdiff1d, digitize, searchsorted, argmax/min, argsort, argpartition | 20+ |
-| 数组操作 | clip, choose, compress, delete, extract, insert, place, put, putmask, pad, trim_zeros | 15+ |
+| 数组操作 | clip, choose, compress, npc_delete, extract, insert, place, put, putmask, pad, trim_zeros | 15+ |
 | 位运算 | bitwise_and/or/xor/not, invert, left_shift, right_shift | 7 |
 | 输入输出 | readtxt, genfromtxt, savetxt, savez (NPZ), frombuffer | 5 |
 | 日期时间 | datetime_now, from_string, as_string, add/sub_days, 比较, is_busday | 10 |
@@ -439,7 +439,7 @@ Array* digitize(Array *arr, Array *bins, int right);
 Array* clip(Array *arr, Array *min, Array *max);
 Array* choose(Array *arr, int num_choices, Array **choices, int mode);
 Array* compress(Array *condition, Array *a, int axis);
-Array* delete(Array *arr, Array *obj, int axis);
+Array* npc_delete(Array *arr, Array *obj, int axis);  // 因 C++ 兼容从 delete 重命名
 Array* extract(Array *condition, Array *arr);
 Array* insert(Array *arr, Array *obj, Array *values, int axis);
 int place(Array *arr, Array *mask, Array *vals);
@@ -516,6 +516,7 @@ double bessel_i0(double x);
 - **结果类型**：数学运算自动提升类型（如 INT32 + FLOAT64 → FLOAT64）
 - **错误处理**：函数出错时返回 `NULL` 并向 `stderr` 输出错误消息
 - **零 Python 依赖**：纯 C 实现，不包装 CPython，不链接 NumPy
+- **C++ 兼容**：所有头文件包含 `extern "C"` 声明；`npc_delete()` 替代 `delete()`（C++ 关键字）
 
 ### 目录结构
 ```
