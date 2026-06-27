@@ -147,7 +147,7 @@ int main() {
 | Shape & Manipulation | reshape, transpose, flatten, ravel, squeeze, expand_dims, tile, repeat, stack/hstack/vstack, split, flip, roll, broadcast | 25+ |
 | Comparison & Logic | greater, equal, less, isclose, logical_and/or/xor/not, all, any, where, count_nonzero | 15+ |
 | Search & Set | unique, intersect1d, setdiff1d, digitize, searchsorted, argmax/min, argsort, argpartition | 20+ |
-| Array Manipulation | clip, choose, compress, delete, extract, insert, place, put, putmask, pad, trim_zeros | 15+ |
+| Array Manipulation | clip, choose, compress, npc_delete, extract, insert, place, put, putmask, pad, trim_zeros | 15+ |
 | Bitwise Operations | bitwise_and/or/xor/not, invert, left_shift, right_shift | 7 |
 | I/O | readtxt, genfromtxt, savetxt, savez (NPZ), frombuffer | 5 |
 | Datetime64 | datetime_now, from_string, as_string, add/sub_days, comparison, is_busday | 10 |
@@ -439,7 +439,7 @@ Array* digitize(Array *arr, Array *bins, int right);
 Array* clip(Array *arr, Array *min, Array *max);
 Array* choose(Array *arr, int num_choices, Array **choices, int mode);
 Array* compress(Array *condition, Array *a, int axis);
-Array* delete(Array *arr, Array *obj, int axis);
+Array* npc_delete(Array *arr, Array *obj, int axis);  // renamed from `delete` for C++ compat
 Array* extract(Array *condition, Array *arr);
 Array* insert(Array *arr, Array *obj, Array *values, int axis);
 int place(Array *arr, Array *mask, Array *vals);
@@ -516,6 +516,7 @@ double bessel_i0(double x);
 - **Result dtype**: Math operations promote types (e.g., INT32 + FLOAT64 → FLOAT64)
 - **Error handling**: Functions return `NULL` on error with a message to `stderr`
 - **No Python dependency**: Pure C — does not wrap CPython or link against NumPy
+- **C++ compatible**: All headers include `extern "C"` guards; `npc_delete()` replaces `delete()` (C++ keyword)
 
 ### Directory Layout
 ```
