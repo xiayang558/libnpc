@@ -3,6 +3,10 @@
 
 #include "array.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
     Array *hist;        // histogram count values (or density)
     Array *bin_edges;   // bin boundaries (length = bins+1)
@@ -60,5 +64,8 @@ int histogram2d(Array *x, Array *y, int bins_x, int bins_y,
  */
 int histogramdd(Array *sample, Array *bins, Array *range, int density, HistogramDDResult *result);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif // HISTOGRAM_H

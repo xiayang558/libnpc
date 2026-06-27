@@ -19,7 +19,6 @@ Array* argmax(Array *arr, int axis, int keepdims) {
         char *data = (char*)arr->data;
         int max_idx = 0;
         // Start from second element (if array is empty, return -1? but empty arrays should not occur)
-        printf("argmax: processing all elements, total size = %d\n", arr->size);
         if (arr->size == 0) {
             fprintf(stderr, "[Error] argmax: empty array\n");
             return NULL;

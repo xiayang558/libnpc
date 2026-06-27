@@ -39,28 +39,26 @@ int main(void) {
     }
 
     /* ── trace ──────────────────────────────────────────────────────── */
-    /* NOTE: trace() returns a raw void* malloc'd pointer (library bug),
-       not a proper Array struct. Cast result directly as double*. */
     TEST_SECTION("trace");
 
     {
         Array *a = make_f64_2d((double[]){1, 2, 3,
                                           4, 5, 6,
                                           7, 8, 9}, 3, 3);
-        void *r = trace(a);
+        Array *r = trace(a);
         ASSERT_NOTNULL(r, "trace result not null");
-        ASSERT_EQ_DBL(((double*)r)[0], 15.0, TOL_F64,
+        ASSERT_EQ_DBL(*(double*)r->data, 15.0, TOL_F64,
                       "trace 3x3 = 1+5+9 = 15");
-        free(r); free_a(a);
+        free_a(r); free_a(a);
     }
 
     {
         Array *a = make_f64_2d((double[]){1, 2, 3, 4}, 2, 2);
-        void *r = trace(a);
+        Array *r = trace(a);
         ASSERT_NOTNULL(r, "trace 2x2 result not null");
-        ASSERT_EQ_DBL(((double*)r)[0], 5.0, TOL_F64,
+        ASSERT_EQ_DBL(*(double*)r->data, 5.0, TOL_F64,
                       "trace 2x2 = 1+4 = 5");
-        free(r); free_a(a);
+        free_a(r); free_a(a);
     }
 
     /* ── det ────────────────────────────────────────────────────────── */

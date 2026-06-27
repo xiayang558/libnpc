@@ -9,6 +9,10 @@
 #include "array.h"
 // #include "_dt_utils.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     DT_UNIT_NS,   // nanosecond
     DT_UNIT_US,   // microsecond
@@ -56,6 +60,9 @@ int64_t datetime_to_ns(DateTime64 dt);
 // holidays: 1-D array of DateTime64 type for official holidays (optional, can be NULL)
 Array* is_busday(Array *dates, const char *weekmask, Array *holidays);
 
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

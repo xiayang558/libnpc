@@ -1,6 +1,10 @@
 #include "def.h"
 #include "array.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 Array* atleast_1d(Array *a);
 Array* atleast_2d(Array *a);
 Array* atleast_3d(Array *a);
@@ -55,3 +59,7 @@ Array* rollaxis(Array *a, int axis, int start);    // corresponds to numpy.rolla
 int meshgrid(Array **arrays, int n, const char *indexing, Array ***out);
 Array* tile(Array *arr, int *reps, int nreps);  // construct an array by repeating (numpy.tile)
 Array* squeeze(Array *arr, int axis);          // remove dimensions of length 1 (numpy.squeeze)
+
+#ifdef __cplusplus
+}
+#endif

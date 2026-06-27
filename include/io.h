@@ -4,6 +4,10 @@
 #include "array.h"
 #include "npzfile.h"   // Include NpzFile
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // helper struct: used to pass multiple array info to the save function (when saving .npz)
 typedef struct {
     int num_arrays;
@@ -77,5 +81,8 @@ int savetxt(const char *filename, Array *arr, const char *fmt,
             const char *delimiter, const char *newline,
             const char *header, const char *footer, const char *comments);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

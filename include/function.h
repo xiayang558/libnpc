@@ -1,8 +1,9 @@
 #include "def.h"
 #include "array.h"
 
-
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 Array* bincount(Array *a, Array *weights, int minlength);
 
@@ -26,7 +27,15 @@ int64_t gcd_int64(int64_t a, int64_t b);
 int64_t to_int64(void *ptr, DataType dtype);
 uint64_t to_uint64(void *ptr, DataType dtype);
 double to_double(void *ptr, DataType dtype);
+#ifdef __cplusplus
+void* to_complex(void *ptr, DataType dtype);
+#else
 complex double to_complex(void *ptr, DataType dtype);
+#endif
 
 Array* readtxt(const char *fname, const char *delimiter, char comment,
                int skiplines, int max_rows, Array *usecols, int ndmin, int unpack, DataType dtype);
+
+#ifdef __cplusplus
+}
+#endif

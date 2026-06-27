@@ -6,7 +6,7 @@
 
 
 // deletearrayinelement
-Array* delete(Array *arr, Array *obj, int axis) {
+Array* npc_delete(Array *arr, Array *obj, int axis) {
     if (arr == NULL || obj == NULL) {
         fprintf(stderr, "delete: NULL argument\n");
         return NULL;
