@@ -12,6 +12,10 @@
 #include <stdint.h>
 #include "array.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* ─── RNG engine ────────────────────────────────────────────────── */
 
 void     random_seed(uint64_t seed);        /* Seed the global RNG state */
@@ -82,5 +86,9 @@ Array* random_multinomial(int n, Array *pvals, int *shape, int ndim); /* Multino
 Array* random_multivariate_normal(Array *mean, Array *cov, int *shape, int ndim); /* MVN via Cholesky */
 Array* random_dirichlet(Array *alpha, int *shape, int ndim);          /* Dirichlet via gamma normalization */
 Array* random_bytes(int n);                                            /* Random bytes */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

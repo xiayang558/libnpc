@@ -94,15 +94,15 @@
 /**
  * @brief Integer minimum value macro
  */
-#define NP_UTILS_INT_MIN(DTYPE, TYPE, min_val_ptr, result_type_ptr) \
+#define NP_UTILS_INT_MIN(DTYPE, TYPE, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE min_val = ((TYPE*)arr->data)[0]; \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
-            if (data[i] < min_val) { \
-                min_val = data[i]; \
+            if (data[i] < _mv) { \
+                _mv = data[i]; \
             } \
         } \
-        min_val_ptr = min_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -112,15 +112,15 @@
 /**
  * @brief Floating-point minimum value macro
  */
-#define NP_UTILS_FLOAT_MIN(DTYPE, TYPE, min_val_ptr, result_type_ptr) \
+#define NP_UTILS_FLOAT_MIN(DTYPE, TYPE, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE min_val = ((TYPE*)arr->data)[0]; \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
-            if (data[i] < min_val) { \
-                min_val = data[i]; \
+            if (data[i] < _mv) { \
+                _mv = data[i]; \
             } \
         } \
-        min_val_ptr = min_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -130,18 +130,18 @@
 /**
  * @brief Complex number minimum value macro (by magnitude)
  */
-#define NP_UTILS_COMPLEX_MIN(DTYPE, TYPE, ABS_FUNC, min_val_ptr, result_type_ptr) \
+#define NP_UTILS_COMPLEX_MIN(DTYPE, TYPE, ABS_FUNC, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE min_val = ((TYPE*)arr->data)[0]; \
-        double min_abs = ABS_FUNC(min_val); \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
+        double _mv_abs = ABS_FUNC(_mv); \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
             double abs_val = ABS_FUNC(data[i]); \
-            if (abs_val < min_abs) { \
-                min_abs = abs_val; \
-                min_val = data[i]; \
+            if (abs_val < _mv_abs) { \
+                _mv_abs = abs_val; \
+                _mv = data[i]; \
             } \
         } \
-        min_val_ptr = min_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -151,15 +151,15 @@
 /**
  * @brief Integer maximum value macro
  */
-#define NP_UTILS_INT_MAX(DTYPE, TYPE, max_val_ptr, result_type_ptr) \
+#define NP_UTILS_INT_MAX(DTYPE, TYPE, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE max_val = ((TYPE*)arr->data)[0]; \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
-            if (data[i] > max_val) { \
-                max_val = data[i]; \
+            if (data[i] > _mv) { \
+                _mv = data[i]; \
             } \
         } \
-        max_val_ptr = max_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -169,15 +169,15 @@
 /**
  * @brief Floating-point maximum value macro
  */
-#define NP_UTILS_FLOAT_MAX(DTYPE, TYPE, max_val_ptr, result_type_ptr) \
+#define NP_UTILS_FLOAT_MAX(DTYPE, TYPE, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE max_val = ((TYPE*)arr->data)[0]; \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
-            if (data[i] > max_val) { \
-                max_val = data[i]; \
+            if (data[i] > _mv) { \
+                _mv = data[i]; \
             } \
         } \
-        max_val_ptr = max_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -187,18 +187,18 @@
 /**
  * @brief Complex number maximum value macro (by magnitude)
  */
-#define NP_UTILS_COMPLEX_MAX(DTYPE, TYPE, ABS_FUNC, max_val_ptr, result_type_ptr) \
+#define NP_UTILS_COMPLEX_MAX(DTYPE, TYPE, ABS_FUNC, out_ptr, result_type_ptr) \
     case DTYPE: { \
-        TYPE max_val = ((TYPE*)arr->data)[0]; \
-        double max_abs = ABS_FUNC(max_val); \
+        TYPE _mv = ((TYPE*)arr->data)[0]; \
+        double _mv_abs = ABS_FUNC(_mv); \
         NP_UTILS_ITERATE(arr, TYPE, data, i) { \
             double abs_val = ABS_FUNC(data[i]); \
-            if (abs_val > max_abs) { \
-                max_abs = abs_val; \
-                max_val = data[i]; \
+            if (abs_val > _mv_abs) { \
+                _mv_abs = abs_val; \
+                _mv = data[i]; \
             } \
         } \
-        max_val_ptr = max_val; \
+        memcpy(out_ptr, &_mv, sizeof(TYPE)); \
         *result_type_ptr = DTYPE; \
         break; \
     }
@@ -218,21 +218,34 @@
     } while (0)
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int is_integer_val(double x);
 
 int is_nan_float(float x);
 int is_nan_double(double x);
 int is_nan_long_double(long double x);
 int is_nan_complex(void *ptr, DataType dtype);
+#ifdef __cplusplus
+int is_nan_complex64(void* z);
+int is_nan_complex128(void* z);
+#else
 int is_nan_complex64(complex float z);
 int is_nan_complex128(complex double z);
+#endif
 
 int is_nan(void *ptr, DataType dtype);
 int is_nan_real(void *ptr, DataType dtype);
 
 double get_value(void *ptr, DataType dtype);
 double get_real_val(void *ptr, DataType dtype);
+#ifdef __cplusplus
+void* get_complex_val(void *ptr, DataType dtype);
+#else
 complex double get_complex_val(void *ptr, DataType dtype);
+#endif
 
 
 int cmp_int(const void *a, const void *b);
@@ -277,5 +290,9 @@ Array* nanargmin(Array *a, int axis);
 Array* isnan_array(Array *arr);       // Detect NaN elements (numpy.isnan)
 Array* isinf_array(Array *arr);       // Detect infinite elements (numpy.isinf)
 Array* isfinite_array(Array *arr);    // Detect finite elements (numpy.isfinite)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // UTILS_H

@@ -163,9 +163,10 @@ int main(void) {
         a = free_a(a);
     }
     {
-        /* empty array (ndim=0 not supported, expect NULL) */
+        /* 0D scalar array */
         Array *a = create_array(NULL, 0, INT32);
-        ASSERT_NULL(a, "array_info 0D returns NULL");
+        ASSERT_NOTNULL(a, "array_info 0D returns valid array");
+        ASSERT_NDIM(a, 0, "array_info 0D ndim=0");
         a = free_a(a);
     }
 

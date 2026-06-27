@@ -25,7 +25,7 @@ int main(void) {
     {
         Array *a = make_i32_1d((int[]){10, 20, 30, 40}, 4);
         Array *obj = make_i32_1d((int[]){1}, 1);
-        Array *r = delete(a, obj, -1);
+        Array *r = npc_delete(a, obj, -1);
         ASSERT_NOTNULL(r, "delete [10,20,30,40] obj=[1]");
         if (r) {
             int expected[] = {10, 30, 40};
@@ -41,7 +41,7 @@ int main(void) {
          *  [3,4],
          *  [5,6]] */
         Array *obj = make_i32_1d((int[]){1}, 1);
-        Array *r = delete(a, obj, 0);
+        Array *r = npc_delete(a, obj, 0);
         ASSERT_NOTNULL(r, "delete 2D row obj=[1] axis=0");
         if (r) {
             int expected[] = {1, 2, 5, 6};

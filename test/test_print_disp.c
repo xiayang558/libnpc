@@ -32,9 +32,9 @@ int main(void) {
         a = free_a(a);
     }
     {
-        /* 0D array not supported, expect NULL */
+        /* 0D scalar — now supported */
         Array *a = create_array(NULL, 0, FLOAT64);
-        ASSERT_NULL(a, "print_array 0D create returns NULL");
+        ASSERT_NOTNULL(a, "print_array 0D create succeeds");
         ASSERT_TRUE(1, "print_array 0D no crash");
     }
 
@@ -42,7 +42,7 @@ int main(void) {
     TEST_SECTION("print_scalar");
 
     {
-        /* 0D arrays not supported by create_array, use size-1 1D instead */
+        /* scalar value in 1D array */
         double data[] = {42.0};
         Array *a = make_f64_1d(data, 1);
         ASSERT_NOTNULL(a, "print_scalar create 0D FLOAT64");
@@ -60,7 +60,7 @@ int main(void) {
         a = free_a(a);
     }
     {
-        /* 0D arrays not supported by create_array, use size-1 1D instead */
+        /* scalar value in 1D array */
         int val = 99;
         Array *a = make_i32_1d(&val, 1);
         ASSERT_NOTNULL(a, "print_scalar create 0D INT32");

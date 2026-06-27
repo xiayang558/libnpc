@@ -2,12 +2,17 @@
 
 
 Array* create_array(int *shape, int ndim, DataType dtype) {
-    if (shape == NULL || ndim <= 0) {
-        fprintf(stderr, "create_array: Invalid shape or dimensions\n");
+    // Allow ndim==0 with NULL shape (0-dimensional scalar array)
+    if (ndim < 0) {
+        fprintf(stderr, "create_array: Invalid dimensions (ndim < 0)\n");
+        return NULL;
+    }
+    if (ndim > 0 && shape == NULL) {
+        fprintf(stderr, "create_array: NULL shape for ndim > 0\n");
         return NULL;
     }
 
-    // Compute total number of elements, allow ndim of 0
+    // Compute total number of elements
     int size = 1;
     for (int i = 0; i < ndim; i++) {
         if (shape[i] < 0) {
@@ -38,14 +43,18 @@ Array* create_array(int *shape, int ndim, DataType dtype) {
     }
 
     // Allocate shape array and copy
-    arr->shape = (int*)malloc(ndim * sizeof(int));
-    if (arr->shape == NULL) {
-        fprintf(stderr, "create_array: Memory allocation failed (shape)\n");
-        if (arr->data) free(arr->data);
-        free(arr);
-        return NULL;
+    if (ndim > 0 && shape) {
+        arr->shape = (int*)malloc(ndim * sizeof(int));
+        if (arr->shape == NULL) {
+            fprintf(stderr, "create_array: Memory allocation failed (shape)\n");
+            if (arr->data) free(arr->data);
+            free(arr);
+            return NULL;
+        }
+        memcpy(arr->shape, shape, ndim * sizeof(int));
+    } else {
+        arr->shape = NULL;
     }
-    memcpy(arr->shape, shape, ndim * sizeof(int));
 
     // Set other attributes
     arr->dtype = dtype;

@@ -46,7 +46,6 @@ Array* sum(Array *arr, int axis, int keepdims) {
                 NP_UTILS_ERROR_LOG("Error", "Unsupported data type (%s)", dtype_name(arr->dtype));
                 return NULL;
         }
-        printf("sum_int64: %lld\n", sum_int64);
         
         int ndim;
         // create result array (scalar)
@@ -55,7 +54,6 @@ Array* sum(Array *arr, int axis, int keepdims) {
         } else {
             ndim = 1;
         }
-        printf("Creating result array with ndim: %d\n", ndim);
 
         int *shape = malloc(ndim * sizeof(int));
         // int *shape = keepdims ? malloc(arr->ndim * sizeof(int)) : 1;
@@ -65,7 +63,6 @@ Array* sum(Array *arr, int axis, int keepdims) {
         // }
         for (int i = 0; i < ndim; i++) {
             shape[i] = 1;
-            printf("shape[%d] set to 1\n", i);
         }
         
         // printf("shape: (%d, %d, %d), ndim: %d, result_type: %s\n", 
@@ -79,13 +76,10 @@ Array* sum(Array *arr, int axis, int keepdims) {
         }
         
         // set result value
-        printf("Storing result in array of type %s\n", dtype_name(result_type));
         switch (result_type) {
             case INT64:
                 // *(int64_t*)result->data = sum_int64;
                 memcpy(result->data, &sum_int64, sizeof(int64_t));
-                printf("Stored sum_int64 in result array: \n");
-                print_array(result);
                 break;
             case UINT64:
                 *(uint64_t*)result->data = sum_uint64;

@@ -34,9 +34,11 @@ int main(void) {
         a = free_a(a);
     }
     {
-        /* create_array with ndim=0 is not supported — returns NULL */
+        /* create_array with ndim=0 returns a valid scalar array */
         Array *a = create_array(NULL, 0, FLOAT64);
-        ASSERT_NULL(a, "create_array 0D returns NULL");
+        ASSERT_NOTNULL(a, "create_array 0D returns valid array");
+        ASSERT_NDIM(a, 0, "create_array 0D ndim=0");
+        ASSERT_SIZE(a, 1, "create_array 0D size=1");
         a = free_a(a);
     }
 

@@ -10,6 +10,10 @@
 #include <stdbool.h>
 #include "def.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef NP_UTILS_ERROR_LOG
 #define NP_UTILS_ERROR_LOG(level, msg, ...) \
     fprintf(stderr, "[%s] %s: " msg "\n", level, __func__, ##__VA_ARGS__)
@@ -142,7 +146,12 @@ Array* full_float(int *shape, int ndim, float value);
 
 Array* zeros_complex(int *shape, int ndim);
 Array* ones_complex(int *shape, int ndim);
+// C++ compat: `complex float` is a C-specific type.
+#ifdef __cplusplus
+Array* full_complex(int *shape, int ndim, void* value);
+#else
 Array* full_complex(int *shape, int ndim, complex float value);
+#endif
 
 Array* full_like(Array *arr, void *value, DataType dtype);
 
@@ -391,7 +400,9 @@ Array* piecewise(Array *x, Array **condlist, int ncond, pf_func *funclist);
  * @param keepdims Keep reduced dims as size-1 if 1, else squeeze them
  * @return Result array; shape depends on axis/keepdims; dtype auto-promoted
  */
-Array* std(Array *arr, int axis, int keepdims);
+// Renamed from `std` to `npc_std` for C++ compatibility
+// (`std` is a reserved C++ namespace).
+Array* npc_std(Array *arr, int axis, int keepdims);
 
 /**
  * @brief Compute the product (like numpy.prod)
@@ -607,7 +618,9 @@ Array* count_nonzero(Array *arr, int axis);
 
 Array* clip(Array *arr, Array *min, Array *max);
 Array* choose(Array *arr, int num_choices, Array **choices, int mode);
-Array* delete(Array *arr, Array *obj, int axis);
+// Renamed from `delete` to `npc_delete` for C++ compatibility
+// (`delete` is a C++ keyword).
+Array* npc_delete(Array *arr, Array *obj, int axis);
 Array* angle(Array *z, int deg);
 Array* any(Array *arr, int axis, int keepdims);
 Array* all(Array *arr, int axis, int keepdims);
@@ -679,5 +692,8 @@ int gradient(Array *arr, Array *spacing, Array ***out, int *num_out);
 double bessel_i0(double arr);
 Array* i0(Array *arr);      // Modified Bessel function of the first kind, order 0
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ARRAY_H
