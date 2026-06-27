@@ -79,7 +79,7 @@ main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display:
     <button class="lang-btn active" data-l="zh" onclick="switchLang('zh')" title="简体中文">中</button>
     <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
   </div>
-  <div class="ver">v1.0 · 324 files · 276 funcs</div>
+  <div class="ver">v1.0.1 · 324 files · 276 funcs</div>
   <a href="https://github.com/xiayang558/libnpc" target="_blank" style="display:block;text-align:center;font-size:12px;color:#555;margin-bottom:6px;text-decoration:none">&#x2B50; GitHub</a>
   <input type="search" id="quickSearch" placeholder="Search function…" onkeydown="if(event.key==='Enter')quickFind()">
   <span class="sep">Overview</span>
@@ -130,7 +130,7 @@ interp: { name:'Interpolation', desc:'interp — 1D linear interpolation.', icon
 signal: { name:'Signal Processing', desc:'convolve, correlate.', icon:'📡' },
 compare:{ name:'Comparison & Logic', desc:'greater, equal, less, isclose, logical_and/or/xor/not, all, any.', icon:'🔍' },
 searchm:{ name:'Search & Set', desc:'unique, intersect1d, setdiff1d, digitize, searchsorted, argmax, argsort.', icon:'🔎' },
-manip: { name:'Array Manipulation', desc:'clip, choose, compress, delete, extract, insert, place, put, around.', icon:'✂️' },
+manip: { name:'Array Manipulation', desc:'clip, choose, compress, npc_delete, extract, insert, place, put, around.', icon:'✂️' },
 bitwise:{ name:'Bitwise Operations', desc:'bitwise_and/or/xor/not, invert, left_shift, right_shift.', icon:'💻' },
 io: { name:'I/O', desc:'readtxt, genfromtxt, savetxt, savez (NPZ), frombuffer.', icon:'💾' },
 utils: { name:'Utilities', desc:'astype, copy, nan_to_num, unwrap, real/imag, ix_, bincount, lcm, gcd.', icon:'🧰' },
@@ -698,9 +698,9 @@ function render(page) {
 
   // Home
   var h3 = '<div class="page active">';
-  var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy).','基于C独立实现的数值运算基础库（类似NumPy）。');
+  var heroDesc = __('A numerical operation basic library independently implemented based on C (similar to NumPy) — now with C++ extern "C" compatibility.','基于C独立实现的数值运算基础库（类似NumPy）——现支持 C++ extern "C" 兼容。');
     h3 += '<div style="text-align:center;margin:20px 0"><img src="https://raw.githubusercontent.com/xiayang558/libnpc/main/pic/logo1.png" alt="libnpc" style="height:80px"></div>';
-  h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span><div style="margin-top:10px"><a href="https://github.com/xiayang558/libnpc" target="_blank" class="badge" style="text-decoration:none;font-size:11px;padding:4px 12px">&#x2B50; Star on GitHub</a></div></div>';
+  h3 += '<div class="hero"><p>'+heroDesc+'</p><span class="badge">C99</span><span class="badge">C++</span><span class="badge">'+__('No Python','无Python依赖')+'</span><span class="badge">MIT</span><span class="badge">875 KB</span><div style="margin-top:10px"><a href="https://github.com/xiayang558/libnpc" target="_blank" class="badge" style="text-decoration:none;font-size:11px;padding:4px 12px">&#x2B50; Star on GitHub</a></div></div>';
 
   // Build CSS as array of strings (avoids multi-line single-quoted string issue)
   var css = [];
@@ -828,7 +828,7 @@ function updateSidebar() {
       a.textContent = LANG === 'zh' ? I18N.modules[k].name : MODULES[k].name;
     }
   });
-  document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0 · 324文件 · 276函数' : 'v1.0 · 324 files · 276 funcs';
+  document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0.1 · 324文件 · 276函数' : 'v1.0.1 · 324 files · 276 funcs';
   const si = document.getElementById('quickSearch');
   if (si) si.placeholder = LANG === 'zh' ? '搜索函数…' : 'Search function…';
   // Update section headers
