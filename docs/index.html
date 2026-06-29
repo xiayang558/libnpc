@@ -79,7 +79,7 @@ main { margin-left: var(--sidebar-w); flex: 1; padding: 60px 48px 36px; display:
     <button class="lang-btn active" data-l="zh" onclick="switchLang('zh')" title="简体中文">中</button>
     <button class="lang-btn" data-l="en" onclick="switchLang('en')" title="English">EN</button>
   </div>
-  <div class="ver">v1.0.1 · 324 files · 276 funcs</div>
+  <div class="ver">v1.0.2 · 332 files · 289 funcs</div>
   <a href="https://github.com/xiayang558/libnpc" target="_blank" style="display:block;text-align:center;font-size:12px;color:#555;margin-bottom:6px;text-decoration:none">&#x2B50; GitHub</a>
   <input type="search" id="quickSearch" placeholder="Search function…" onkeydown="if(event.key==='Enter')quickFind()">
   <span class="sep">Overview</span>
@@ -828,7 +828,7 @@ function updateSidebar() {
       a.textContent = LANG === 'zh' ? I18N.modules[k].name : MODULES[k].name;
     }
   });
-  document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0.1 · 324文件 · 276函数' : 'v1.0.1 · 324 files · 276 funcs';
+  document.querySelector('nav .ver').textContent = LANG === 'zh' ? 'v1.0.2 · 332文件 · 289函数' : 'v1.0.2 · 332 files · 289 funcs';
   const si = document.getElementById('quickSearch');
   if (si) si.placeholder = LANG === 'zh' ? '搜索函数…' : 'Search function…';
   // Update section headers

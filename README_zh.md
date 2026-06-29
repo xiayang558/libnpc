@@ -6,7 +6,7 @@
 <h1 align="center">NumPy C 库</h1>
 
 <p align="center">
-  <a href="https://github.com/xiayang558/libnpc"><img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version"></a>
+  <a href="https://github.com/xiayang558/libnpc"><img src="https://img.shields.io/badge/version-1.0.2-blue" alt="Version"></a>
   <a href="https://en.wikipedia.org/wiki/C99"><img src="https://img.shields.io/badge/C-99-blue" alt="C99"></a>
   <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/C++-11-blue" alt="C++11"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
@@ -141,7 +141,7 @@ int main() {
 | 模块 | 关键函数 | 数量 |
 |:----:|:--------|:----:|
 | 数组创建 | zeros, ones, full, arange, linspace, logspace, geomspace, eye, diag, tri, vander, meshgrid | 30+ |
-| 核心数学 | add, subtract, multiply, divide, sqrt, exp, log, sin/cos/tan, power, mod, abs, sign, floor, ceil | 46+ |
+| 核心数学 | add, subtract, multiply, divide, sqrt, exp, log, sin/cos/tan, power, mod, fmod, reciprocal, positive, negative, abs, absolute, sign, square, cbrt, ldexp, floor, ceil | 56+ |
 | 三角函数 | arcsin/arccos/arctan, 双曲函数, arctan2, deg2rad, radians, angle | 18 |
 | 浮点运算 | fabs, copysign, nextafter, spacing, frexp, modf, logaddexp | 12 |
 | 统计 | sum, mean, std, var, median, percentile, quantile, min, max, ptp, cumsum, cov, corrcoef, trapz | 26+ |
@@ -234,6 +234,15 @@ Array* arint(Array *arr);
 Array* atrunc(Array *arr);
 Array* logaddexp(Array *arr1, Array *arr2);
 Array* logaddexp2(Array *arr1, Array *arr2);
+Array* reciprocal(Array *x);
+Array* positive(Array *x);
+Array* negative(Array *x);
+Array* square(Array *x);
+Array* absolute(Array *x);
+Array* npc_cbrt(Array *x);
+Array* npc_ldexp(Array *x, Array *exp);
+Array* fmod_arr(Array *x1, Array *x2);
+Array* pow_arr(Array *x1, Array *x2);
 ```
 
 ### 三角函数
@@ -504,6 +513,7 @@ Array* nan_to_num(Array *arr);
 Array* unwrap(Array *arr, double discont, int axis);
 Array* real_array(Array *arr);
 Array* imag_array(Array *arr);
+int ndim(Array *a);
 int ix_(Array **arrays, int n, Array ***out);
 Array* diff(Array *arr, int n, int axis);
 Array* ediff1d(Array *y, Array *to_begin, Array *to_end);

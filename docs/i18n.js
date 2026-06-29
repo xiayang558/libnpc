@@ -630,6 +630,16 @@ I18N.fn = {
   multiply_scalar:{ desc:'数组逐元素乘标量。' },
   sinc:{ desc:'归一化 sinc 函数：sin(πx)/(πx)。x=0 时返回 1。类似 numpy.sinc。' , ret:'大多数类型为FLOAT64，FLOAT32输入则为FLOAT32', params:['输入（实数）']},
   true_divide:{ desc:'强制浮点除法。整数输入也返回 FLOAT64。类似 numpy.true_divide。' , ret:'FLOAT64 类型广播形状的结果数组', params:['被除数','Divisor']},
+  npc_ldexp:{ desc:'逐元素计算 x * 2^exp。类似 numpy.ldexp。' },
+  reciprocal:{ desc:'逐元素计算 1/x。类似 numpy.reciprocal。' },
+  positive:{ desc:'返回 +x（数值拷贝）。类似 numpy.positive。' },
+  negative:{ desc:'逐元素计算 -x。类似 numpy.negative。' },
+  fmod_arr:{ desc:'逐元素 C 风格取余（向零截断）。类似 numpy.fmod。' },
+  npc_cbrt:{ desc:'逐元素计算立方根。类似 numpy.cbrt。' },
+  square:{ desc:'逐元素计算 x^2。类似 numpy.square。' },
+  absolute:{ desc:'逐元素绝对值。类似 numpy.absolute。' },
+  pow_arr:{ desc:'逐元素幂运算 base^exp。类似 numpy.power。' },
+  modf_arr:{ desc:'将浮点数拆分为小数和整数部分。类似 numpy.modf。' },
 
   // Statistics
   sum:      { desc:'沿指定轴求和。axis=-1 展开所有元素。', notes:'整数晋升为 INT64，浮点/复数保持原类型。' , ret:'在指定轴上归约/连接的结果数组', params:['输入数组','Axis to reduce (-1 = flatten all elements)','If non-zero, reduced axis kept as size 1']},
@@ -835,6 +845,8 @@ I18N.fn = {
   modf_array:{ desc:'将浮点数分解为小数部分和整数部分，均保持原符号。类似 numpy.modf。' , ret:'成功返回0', params:['输入','Fractional part (FLOAT64)','Integral part (FLOAT64)']},
   nextafter_array:{ desc:'返回 x1 朝 x2 方向的下一个可表示的浮点值。类似 numpy.nextafter。' , ret:'FLOAT64 类型广播形状的结果数组', params:['起始值','Direction']},
   spacing_array:{ desc:'返回 x 到下一个相邻浮点数的距离。类似 numpy.spacing。' , params:['浮点输入']},
+  npc_frexp:{ desc:'将浮点数分解为尾数和指数。类似 numpy.frexp。' },
+  spacing:{ desc:'返回每个值到下一个相邻浮点数的距离。类似 numpy.spacing。' },
 
   // Bitwise
   bitwise_and:{ desc:'逐元素按位与。类似 numpy.bitwise_and。' , ret:'与输入相同dtype，广播形状', params:['第一个（整数）','Second (integer)']},
@@ -859,6 +871,7 @@ I18N.fn = {
   lcm:      { desc:'逐元素计算最小公倍数。类似 numpy.lcm。' , notes:'lcm(a,b)=|a·b|/gcd(a,b)。大值时可能溢出（与 NumPy 行为一致）。', ret:'INT64 类型广播形状的结果数组', params:['第一个整数','Second integer']},
   piecewise:{ desc:'分段函数求值。根据条件列表选择对应函数。类似 numpy.piecewise。' , notes:'条件按顺序求值，首个为真的条件胜出。所有条件为假则返回默认值。', ret:'FLOAT64 数组，与 x 形状相同', params:['输入','ncond BOOL condition arrays','Number of conditions','ncond function pointers: double (*)(double)']},
   real_array:{ desc:'返回复数数组的实部。类似 numpy.real。' , params:['输入']},
+  ndim:      { desc:'返回数组的维度数。类似 numpy.ndim。' },
 
   // Search (additional)
   argmin:   { desc:'沿指定轴返回最小值的索引。类似 numpy.argmin。' , params:['输入','Axis (-1=flat)','Keep dims']},

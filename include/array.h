@@ -207,12 +207,21 @@ Array* setdiff1d(Array *arr1, Array *arr2);
 
 // Element-wise math functions
 Array* abs_array(Array *arr);
+Array* absolute(Array *arr);
 Array* sqrt_array(Array *arr);
 Array* exp_array(Array *arr);
 Array* log_array(Array *arr);
 Array* log10_array(Array *arr);
 Array* log2_array(Array *arr);
+Array* reciprocal(Array *x);
+Array* positive(Array *x);
+Array* negative(Array *x);
+Array* npc_ldexp(Array *x, Array *exp);
+Array* fmod_arr(Array *x1, Array *x2);
+Array* npc_cbrt(Array *x);
+Array* square(Array *x);
 Array* power(Array *arr1, Array *arr2);   // Power (exponentiation)
+Array* pow_arr(Array *arr1, Array *arr2);
 
 /**
  * @brief Element-wise remainder (like numpy.mod)
@@ -278,6 +287,7 @@ const char* np_typename(const char *typechar);  // Type character → readable n
 Array* sign(Array *arr);             // Sign function (numpy.sign)
 Array* sinc(Array *arr);             // sinc(x) = sin(πx)/(πx)（numpy.sinc）
 int asize(Array *arr, int axis);      // Return total elements or axis length (numpy.size)
+int ndim(Array *a);
 
 // Two-argument arctangent
 Array* arctan2(Array *arr1, Array *arr2);
@@ -476,8 +486,11 @@ Array* fabs_array(Array *arr);
 Array* copysign_array(Array *x1, Array *x2);
 Array* nextafter_array(Array *x1, Array *x2);
 Array* spacing_array(Array *arr);
+Array* spacing(Array *arr);
 int frexp_array(Array *arr, Array **mant, Array **exp);
+int npc_frexp(Array *x, Array **mant, Array **exp);
 int modf_array(Array *arr, Array **frac, Array **integ);
+int modf_arr(Array *x, Array **frac, Array **integ);
 Array* trim_zeros(Array *arr, const char *trim);
 int ix_(Array **arrays, int n, Array ***out);   // Open grid indices (numpy.ix_)
 
