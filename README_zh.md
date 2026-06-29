@@ -5,6 +5,12 @@
 </div>
 <h1 align="center">NumPy C 库</h1>
 
+<p align="center">
+  <a href="https://github.com/xiayang558/libnpc"><img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version"></a>
+  <a href="https://en.wikipedia.org/wiki/C99"><img src="https://img.shields.io/badge/C-99-blue" alt="C99"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+</p>
+
 - [libnpc](#libnpc)
   - [1. 项目简介](#1-项目简介)
   - [2. 编译安装](#2-编译安装)
